@@ -2,6 +2,24 @@
 
 Nov 4, 2026 · 작성: 준이 · 패치 파일: `timestamp_final.patch`
 
+## 각자 해야 할 일
+
+### 공통: 패치 적용
+
+`timestamp_final.patch`를 개발 PC의 홈 폴더에 넣고 실행한다. 시험 적용이 통과해야 실제로 적용된다.
+
+```bash
+cd ~/apache6-sr-linux_som_micro/applications
+patch -p1 --dry-run < ~/timestamp_final.patch && patch -p1 -b < ~/timestamp_final.patch
+cd wayland_npu_app
+make clean
+make > ~/timestamp_build.log 2>&1; echo "make 종료 코드: $?"
+```
+
+- 시험 적용이 실패하면 파일은 바뀌지 않는다. 위의 [변경한 코드](#변경한-코드)를 보고 직접 반영한다.
+- `VIS0_MAX_CH`는 각자의 카메라 또는 입력 설정에 맞춘다.
+- `-b` 옵션으로 생긴 `.orig` 백업 파일은 공유하지 않는다.
+
 ## 요약
 
 - 원래 결과 버퍼의 timestamp는 항상 0이었다. 이제 **프레임을 꺼낸 시각**이 결과 버퍼까지 전달된다.
@@ -87,21 +105,21 @@ render()에서 프레임을 꺼낸 직후 nc_get_mono_us_time()으로 시각 기
 
 ## 각자 해야 할 일
 
-### 공통: 패치 적용
+~~### 공통: 패치 적용~~
 
-`timestamp_final.patch`를 개발 PC의 홈 폴더에 넣고 실행한다. 시험 적용이 통과해야 실제로 적용된다.
+~~`timestamp_final.patch`를 개발 PC의 홈 폴더에 넣고 실행한다. 시험 적용이 통과해야 실제로 적용된다.~~
 
-```bash
-cd ~/apache6-sr-linux_som_micro/applications
-patch -p1 --dry-run < ~/timestamp_final.patch && patch -p1 -b < ~/timestamp_final.patch
-cd wayland_npu_app
-make clean
-make > ~/timestamp_build.log 2>&1; echo "make 종료 코드: $?"
-```
+~~```bash~~
+~~cd ~/apache6-sr-linux_som_micro/applications
+~~patch -p1 --dry-run < ~/timestamp_final.patch && patch -p1 -b < ~/timestamp_final.patch
+~~cd wayland_npu_app
+~~make clean
+~~make > ~/timestamp_build.log 2>&1; echo "make 종료 코드: $?"
+~~```~~
 
-- 시험 적용이 실패하면 파일은 바뀌지 않는다. 위의 [변경한 코드](#변경한-코드)를 보고 직접 반영한다.
-- `VIS0_MAX_CH`는 각자의 카메라 또는 입력 설정에 맞춘다.
-- `-b` 옵션으로 생긴 `.orig` 백업 파일은 공유하지 않는다.
+~~- 시험 적용이 실패하면 파일은 바뀌지 않는다. 위의 [변경한 코드](#변경한-코드)를 보고 직접 반영한다.~~
+~~- `VIS0_MAX_CH`는 각자의 카메라 또는 입력 설정에 맞춘다.~~
+~~- `-b` 옵션으로 생긴 `.orig` 백업 파일은 공유하지 않는다.~~
 
 ### 서영
 
