@@ -226,3 +226,23 @@ CSRCS               += $(NC_CNN_CORE_DIR)/nc_traj.c
 - Segmentation 결과의 timestamp 값 (현재 빌드에 포함되어 있지만, 임시 로그는 객체와 차선만 확인)
 - 장시간 실행 (이번 확인은 짧은 실행 로그 기준)
 - 카메라 4채널, 도로 영상 입력(v4l2loopback) 환경
+
+### 서영
+서영 님, nc_traj 빈 파일 전달드립니다.
+nc_traj_reset()은 아직 빈 함수라 호출해도 아무 동작을 하지 않습니다. 내부 구현은 이후 채울 예정입니다.
+
+1. 첨부한 파일을 아래 폴더에 넣어 주세요.
+applications/common/nc_app_modules/cnn/core/
+- nc_traj.c
+- nc_traj.h
+
+2. applications/wayland_npu_app/Makefile에서 ifeq ($(USE_BYTETRACK), yes) 바로 위에 아래 줄을 추가해 주세요.
+ByteTrack 설정과 관계없이 빌드되도록 ifeq 블록 밖에 넣어야 합니다.
+
+CSRCS               += $(NC_CNN_CORE_DIR)/nc_traj.c
+
+3. 호출할 파일에서 헤더를 포함한 뒤 함수를 호출하면 됩니다.
+
+#include "nc_traj.h"
+
+nc_traj_reset();
