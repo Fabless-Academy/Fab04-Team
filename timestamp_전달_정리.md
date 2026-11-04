@@ -148,6 +148,80 @@ render()에서 프레임을 꺼낸 직후 nc_get_mono_us_time()으로 시각 기
 
 ## 아직 확인하지 못한 것
 
+# bytetrack
+
+### wayland_npu_app.c 수정
+
+경로: /home/devuser/apache6-sr-linux_som_micro/applications/wayland_npu_app/wayland_npu_app.c
+
+951번 줄에 추가(951~953)
+
+```jsx
+#ifdef SHOW_TRI_CHIMERA
+        net_id = NETWORK_TRI_CHIMERA;
+#endif
+```
+
+비교(939~961)
+
+```jsx
+#ifdef USE_BYTETRACK
+    for (int i = 0; i < VIDEO_MAX_CH; i++) {
+        E_NETWORK_UID net_id;
+#ifdef SHOW_PELEE_DETECT
+        net_id = NETWORK_PELEE_DET;
+#endif
+#ifdef SHOW_YOLOV5_DETECT
+        net_id = NETWORK_YOLOV5_DET;
+#endif
+#ifdef SHOW_YOLOV8_DETECT
+        net_id = NETWORK_YOLOV8_DET;
+#endif
+#ifdef SHOW_TRI_CHIMERA
+        net_id = NETWORK_TRI_CHIMERA;
+#endif
+#ifndef SHOW_PELEE_SEG
+        if (nc_init_bytetrackers(CAP_FPS, i, net_id) != 0) {
+            perror("nc_init_bytetrackers() error");
+            return -1;
+        }
+#endif
+    }
+#endif
+```
+
+### makefile 수정
+
+경로: /home/devuser/apache6-sr-linux_som_micro/applications/wayland_npu_app/Makefile
+
+54번 줄 주석 해제
+
+```jsx
+53 # USE_8MP_VI          = yes
+54   USE_BYTETRACK       = yes
+55 # USE_ADAS_LD         = yes
+```
+
+# nc_traj 스텁 함수
+
+| 파일 | 변경 내용 |
+| --- | --- |
+| `common/nc_app_modules/cnn/core/nc_traj.h` | 새로 생성: `nc_traj_reset()` 선언 |
+| `common/nc_app_modules/cnn/core/nc_traj.c` | 새로 생성: 빈 `nc_traj_reset()` 정의 |
+| `wayland_npu_app/Makefile` | 331번 줄에 아래 줄 추가 |
+
+```jsx
+CSRCS               += $(NC_CNN_CORE_DIR)/nc_traj.c
+```
+
+서영에게 해당 파일 어떻게 받을건지 물어보기
+
+| 서영 님의 답변 | 전달 방법 |
+| --- | --- |
+| 공용 저장소가 있음 | 그 저장소의 최신 코드에 이번 변경을 적용한 뒤 푸시 |
+| 패치 파일로 받음 | 커밋으로 패치 파일을 만들어 전달 |
+| 파일로 받음 | `nc_traj.c`, `nc_traj.h`를 보내고 Makefile에 추가할 한 줄을 안내 |
+
 - PeleeDet, `MULTI` 빌드, 모드 전환 중 동작
 - Segmentation 결과의 timestamp 값 (현재 빌드에 포함되어 있지만, 임시 로그는 객체와 차선만 확인)
 - 장시간 실행 (이번 확인은 짧은 실행 로그 기준)
