@@ -1,0 +1,33 @@
+카메라 장치 번호와 해상도는 바꾸지 않았어요. 대신 **V4L2 카메라 경로를 아예 쓰지 않고, ffmpeg로 동영상 파일을 직접 디코딩해서 읽도록** 입력 방식을 바꿨습니다.
+
+## 바꾸지 않은 것
+- **장치 번호**: [wayland_npu_app.c:377](wayland_npu_app.c#L377)은 원본과 같이 `CNN_DEVICE_NUM(VISION0) + i`(`/dev/video10`)입니다. 지금은 V4L2를 열지 않으니 이 값은 쓰이지도 않습니다.
+- **해상도**: `VIDEO_WIDTH/HEIGHT = NPU_INPUT_WIDTH/HEIGHT`, `CAP_FPS = 30`, `pixformat = V4L2_PIX_FMT_RGB24` 모두 원본과 같습니다.
+- `run_v4l2loopback.sh`(`/dev/video11~`로 내보내는 스크립트)도 있긴 한데, 지금 앱은 이걸 쓰지 않아요.
+
+## 바꾼 것 (원본 `wayland_npu_app.c.orig`와 비교)
+
+1. **Makefile 스위치** ([Makefile:57](Makefile#L57), [Makefile:260](Makefile#L260))
+   `USE_FILE_INPUT = yes` → `-DUSE_FILE_INPUT`. 이 줄을 주석 처리하면 원래 카메라 경로로 돌아갑니다.
+
+2. **채널 수** ([wayland_npu_app.c:95](wayland_npu_app.c#L95))
+   `VIS0_MAX_CH` 4 → 1
+
+3. **입력 초기화** ([wayland_npu_app.c:474](wayland_npu_app.c#L474))
+   `v4l2_initialize()`가 `nc_v4l2_open()` 대신 `file_input_initialize()`를 바로 부르고 끝납니다. 이 함수는 `popen()`으로 아래 명령을 실행합니다([wayland_npu_app.c:182-223](wayland_npu_app.c#L182-L223)).
+   ```
+   misc/ffmpeg -stream_loop -1 -re -i <파일> -vf scale=NPU_W:NPU_H -pix_fmt rgb24 -f rawvideo -
+   ```
+   - 해상도는 앱 설정을 바꾸는 대신 **ffmpeg의 `-vf scale`로 NPU 입력 크기에 맞춥니다.** 원본 영상이 1920x1080이어도 문제없습니다.
+   - `-re`로 실시간 속도에 맞추고, `-stream_loop -1`로 끝없이 반복합니다.
+   - 파이프 fd를 `video_fd`에 넣어서 기존 `video_fd != -1` 검사가 그대로 통과합니다.
+
+4. **render 루프** ([wayland_npu_app.c:815-842](wayland_npu_app.c#L815-L842))
+   DQBUF/QBUF 대신 `file_input_read_frame()`으로 파이프에서 한 프레임(W×H×3)을 `fread`합니다.
+   - **픽셀 배치가 카메라와 반대**입니다. 카메라 버퍼는 planar라서 화면용으로 interleaved 변환을 하지만, ffmpeg 출력은 interleaved라서 **NPU용으로 `nc_rgb_interleaved_to_planar_neon()` 변환**을 하고 화면에는 그대로 올립니다.
+   - 프레임 시각(`g_disp_frame_ts_us`) 갱신은 카메라 경로와 같은 위치에 있습니다.
+
+5. **`-i <파일>` 옵션** ([wayland_npu_app.c:1181](wayland_npu_app.c#L1181))
+   입력 파일을 지정합니다. 기본값은 `misc/image_npu/1920_1080_0001.mp4`입니다.
+
+참고로 `share_kal.md`에는 "`-l` 옵션과 `nc_run_mode_*` 호출을 뺐다"고 되어 있는데, 지금 이 폴더의 `wayland_npu_app.c`(11-05 09:45)에는 아직 남아 있어요([wayland_npu_app.c:823](wayland_npu_app.c#L823), [wayland_npu_app.c:1108](wayland_npu_app.c#L1108), [wayland_npu_app.c:1179](wayland_npu_app.c#L1179)). 정리한 버전이 다른 곳에 있다면 보낼 파일을 한 번 확인해 보세요.
