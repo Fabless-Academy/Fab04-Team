@@ -86,6 +86,13 @@
 #include "nc_ldw.h"
 #endif
 
+#include "nc_utils.h"
+// trajectory prediction + cut-in warning (junyi)
+#include "nc_traj.h"
+#include "nc_cutin.h"
+#include "nc_rec.h"   // nc_rec_trigger(): seoyoung (stub until merged)
+#define NC_REC_TYPE_CUTIN   (1)
+
 /*
 ********************************************************************************
 *               DEFINES
@@ -437,6 +444,15 @@ int v4l2_initialize(void)
     return 0;
 }
 
+// capture time (nc_get_mono_us_time) of the video frame shown on each channel
+static uint64_t g_disp_frame_ts_us[VIDEO_MAX_CH];
+
+// prediction line shorter than this (screen px) is not drawn
+#define PRED_LINE_MIN_PX    (15.0f)
+
+// cut-in warning box / text color (yellow: car class is already red)
+static float g_cutin_color[4] = {1.0f, 0.9f, 0.0f, 1.0f};
+
 void nc_draw_gl_npu(struct viewport viewport, int network_task, pp_result_buf *net_result, struct gl_npu_program g_npu_prog)
 {
     stCnnPostprocessingResults *det_result = &net_result->cnn_result;
@@ -467,10 +483,51 @@ void nc_draw_gl_npu(struct viewport viewport, int network_task, pp_result_buf *n
             color[j][RGBA_A] = 1.0f;
         }
 
+        // cut-in judgement runs once per displayed frame of this channel
+        int cut_ch = (net_result->cam_channel < VIDEO_MAX_CH) ? (int)net_result->cam_channel : -1;
+        if (cut_ch >= 0) nc_cutin_begin_frame(cut_ch, g_disp_frame_ts_us[cut_ch]);
+
         for(int i=0; i<draw_cnn->max_class_cnt; i++){
             for(int bidx = 0; bidx < det_result->class_objs[i].obj_cnt; bidx++) {
                 stObjInfo obj_info = det_result->class_objs[i].objs[bidx];
-                nc_opengl_draw_rectangle(obj_info.bbox.x, obj_info.bbox.y, obj_info.bbox.w, obj_info.bbox.h, color[i], g_npu_prog);
+                // predicted box if available (vehicle, enough history), else measured box.
+                // Only the drawn copy changes; det_result / tracker input stay measured.
+                int   has_future = 0;
+                float fut_cx = 0.f, fut_cy = 0.f;
+                if (cut_ch >= 0) {
+                    uint64_t disp_t = g_disp_frame_ts_us[cut_ch];
+                    stBBox pred_box;
+                    if (nc_traj_get_predicted_box(cut_ch, i, obj_info.track_id, disp_t, &pred_box)) {
+                        obj_info.bbox = pred_box;
+                        // future center (same snapshot) for the prediction line
+                        has_future = nc_traj_get_future_center(cut_ch, i, obj_info.track_id, disp_t,
+                                                               nc_cutin_get_horizon_ms(),
+                                                               &fut_cx, &fut_cy);
+                    }
+                }
+                // cut-in: future bottom-center enters the ego lane (lane coordinates)
+                int is_cutin = 0;
+                if (has_future) {
+                    is_cutin = nc_cutin_eval(cut_ch, i, obj_info.track_id, &obj_info.bbox,
+                                             fut_cx, fut_cy, g_disp_frame_ts_us[cut_ch]);
+                }
+                float *dcolor = is_cutin ? g_cutin_color : color[i];
+
+                nc_opengl_draw_rectangle(obj_info.bbox.x, obj_info.bbox.y, obj_info.bbox.w, obj_info.bbox.h, dcolor, g_npu_prog);
+                if (is_cutin) { // thicker box
+                    nc_opengl_draw_rectangle(obj_info.bbox.x + 3.f, obj_info.bbox.y + 3.f,
+                                             obj_info.bbox.w - 6.f, obj_info.bbox.h - 6.f, dcolor, g_npu_prog);
+                }
+
+                // prediction line: current (predicted-now) center -> center after FUTURE_MS, dashed.
+                // Hidden when shorter than PRED_LINE_MIN_PX (only bbox jitter).
+                float cur_cx = obj_info.bbox.x + obj_info.bbox.w * 0.5f;
+                float cur_cy = obj_info.bbox.y + obj_info.bbox.h * 0.5f;
+                float ldx = fut_cx - cur_cx, ldy = fut_cy - cur_cy;
+                if (has_future && (ldx * ldx + ldy * ldy) >= PRED_LINE_MIN_PX * PRED_LINE_MIN_PX) {
+                    nc_opengl_draw_line(cur_cx, cur_cy, fut_cx, fut_cy, 2 /* dashed */, dcolor, g_npu_prog);
+                    nc_opengl_draw_rectangle(fut_cx - 4.f, fut_cy - 4.f, 8.f, 8.f, dcolor, g_npu_prog); // end marker
+                }
 
                 // draw bbox label
 #ifdef USE_BYTETRACK
@@ -480,8 +537,20 @@ void nc_draw_gl_npu(struct viewport viewport, int network_task, pp_result_buf *n
 #else
                 sprintf(buftext, "%s:%0.2f", draw_cnn->class_names[i], obj_info.prob);
 #endif
-                float textcolor[3] = {color[i][RGBA_R], color[i][RGBA_G], color[i][RGBA_B]};
+                if (is_cutin) sprintf(buftext, "[%d]CUT-IN", obj_info.track_id);
+                float textcolor[3] = {dcolor[RGBA_R], dcolor[RGBA_G], dcolor[RGBA_B]};
                 nc_opengl_draw_text(&font_24, buftext, obj_info.bbox.x, (float)WINDOW_HEIGHT - (obj_info.bbox.y-12), target_view_ratio, textcolor, WINDOW_WIDTH, WINDOW_HEIGHT, g_font_prog);
+            }
+        }
+
+        if (cut_ch >= 0) {
+            if (nc_cutin_end_frame(cut_ch)) {
+                nc_rec_trigger(NC_REC_TYPE_CUTIN);   // cut-in warning just turned ON (edge only)
+            }
+            if (nc_cutin_active_count(cut_ch) > 0) {
+                float wcolor[3] = {g_cutin_color[RGBA_R], g_cutin_color[RGBA_G], g_cutin_color[RGBA_B]};
+                nc_opengl_draw_text(&font_38, "CUT-IN WARNING", (float)WINDOW_WIDTH * 0.5f - 160.f, 1020.f,
+                                    target_view_ratio, wcolor, WINDOW_WIDTH, WINDOW_HEIGHT, g_font_prog);
             }
         }
 
@@ -757,7 +826,8 @@ void render(void *data, struct wl_callback *callback, uint32_t time)
                     ((framecnt % 2 == 1) && (i == 1 || i == 3)))
 #endif
                 {
-                    uint64_t time_stamp_us = 0;
+                    uint64_t time_stamp_us = nc_get_mono_us_time();   // frame taken now
+                    g_disp_frame_ts_us[i] = time_stamp_us;            // this frame is shown below
                     networkOrder[i] = nc_get_cnn_networks_id();
                     unsigned char* rgbdata_for_cnn = (unsigned char *)malloc(npu_input_info.rgb_size);
 #ifdef USE_V4L2LOOPBACK
@@ -848,6 +918,9 @@ void render(void *data, struct wl_callback *callback, uint32_t time)
         }
         else{
             uint64_t time_stamp = 0;
+
+            // trajectory snapshot for this displayed frame (before drawing boxes)
+            nc_traj_predict_frame((int)ch, g_disp_frame_ts_us[ch]);
 
         #ifdef DETECT_NETWORK
             pp_result_buf *det_buf = NULL;
@@ -1027,6 +1100,9 @@ int npu_init(st_npu_input_info *npu_input_info)
 #endif
 #ifdef SHOW_YOLOV8_DETECT
         net_id = NETWORK_YOLOV8_DET;
+#endif
+#ifdef SHOW_TRI_CHIMERA
+        net_id = NETWORK_TRI_CHIMERA;
 #endif
 #ifndef SHOW_PELEE_SEG
         if (nc_init_bytetrackers(CAP_FPS, i, net_id) != 0) {

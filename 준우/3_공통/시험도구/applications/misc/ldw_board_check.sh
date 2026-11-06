@@ -1,7 +1,8 @@
 #!/bin/sh
 # Board check for the video input + LDW.
 #
-#   ./ldw_board_check.sh [seconds]      (default 50: one full 40 s video loop)
+#   ./ldw_board_check.sh [seconds] [video-file]   (default 50 s, default video)
+#   e.g. ./ldw_board_check.sh 50 misc/image_npu/1105_kki.mov   (cut-in check)
 #
 # Runs run_app_wayland_npu.sh twice (long run, then a short restart check),
 # stops it the same way Ctrl+C does, and writes everything that has to be
@@ -11,6 +12,15 @@
 SCRIPT_DIR=$(CDPATH= cd -P "$(dirname "$0")" && pwd) || exit 1
 RUN="$SCRIPT_DIR/run_app_wayland_npu.sh"
 DUR=${1:-50}
+VIDEO=${2:-}
+case "$VIDEO" in
+    ""|/*) ;;
+    *) VIDEO="$PWD/$VIDEO" ;;
+esac
+if [ -n "$VIDEO" ] && [ ! -r "$VIDEO" ]; then
+    echo "Video file not found: $VIDEO" >&2
+    exit 1
+fi
 RESTART_DUR=${RESTART_DUR:-15}
 STAMP=$(date +%m%d_%H%M%S)
 OUT="$SCRIPT_DIR/ldw_check_$STAMP.txt"
@@ -48,7 +58,7 @@ trap abort INT TERM HUP
 # Sets RESULT.
 run_once()
 {
-    "$RUN" > "$1" 2>&1 &
+    "$RUN" ${VIDEO:+"$VIDEO"} > "$1" 2>&1 &
     CUR_PID=$!
     n=0
     while [ "$n" -lt "$2" ] && kill -0 "$CUR_PID" 2>/dev/null; do
@@ -71,6 +81,7 @@ MALI_BEFORE=$(mali_faults)
 {
     section "board"
     date
+    echo "video: ${VIDEO:-default (run_v4l2loopback.sh)}"
     uname -a
     cat /proc/loadavg
 
@@ -136,6 +147,22 @@ sleep 1
     } END { printf "%d of %d", l, n }')"
     echo "sample:"
     grep "lane_class:" "$LOG1" | head -3
+
+    section "cut-in (run 1)"
+    grep -h "\[nc_cutin\] config" "$LOG1" | head -1
+    grep -hE "\[nc_cutin\].*(cut-in O|ego lane change)" "$LOG1" | head -40
+    echo "cut-in ON: $(grep -c 'cut-in ON' "$LOG1")   nc_rec_trigger(1) calls: $(grep -c 'nc_rec_trigger(1)' "$LOG1")   (expect equal)"
+    grep "\[nc_cutin\] ch0 stats" "$LOG1" | awk '{
+        for (i = 1; i <= NF; i++) { split($i, kv, ":"); if (kv[2] != "") s[kv[1]] += kv[2] }
+        n++
+    } END { if (n) printf "stats total over %d s: eval=%d hold=%d no_lane=%d (far=%d lost=%d stale=%d) inside=%d not_enter=%d cand=%d\n", n, s["eval"], s["hold"], s["no_lane"], s["far"], s["lost"], s["stale"], s["inside"], s["not_enter"], s["cand"] }'
+    echo "per second (eval far lost stale inside not_enter cand on fps):"
+    grep "\[nc_cutin\] ch0 stats" "$LOG1" | awk '{
+        line = ""
+        for (i = 1; i <= NF; i++) { split($i, kv, ":"); if (kv[1] ~ /^(eval|far|lost|stale|inside|not_enter|cand|on|fps)$/) line = line " " kv[2] }
+        printf "  %2d s:%s\n", ++n, line
+    }' | head -60
+    grep -h "\[nc_traj\]" "$LOG1" | head -3
 
     section "app shutdown messages"
     grep -hE "\[app\]|did not exit" "$LOG1" "$LOG2"

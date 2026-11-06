@@ -51,7 +51,7 @@ USE_UFLD_TRACKING = yes
 endif
 
 # USE_8MP_VI          = yes
-# USE_BYTETRACK       = yes
+USE_BYTETRACK       = yes
 # USE_ADAS_LD         = yes
 # lane departure warning (needs the UFLD lane network)
 USE_LDW             = yes
@@ -342,6 +342,10 @@ CSRCS              += $(NC_NEON_DIR)/nc_neon.c
 ifeq ($(USE_LDW)$(USE_CNN_UFLD_NETWORK), yesyes)
 CSRCS               += $(NC_APP_MODULES)/ldw/nc_ldw.c
 endif
+# trajectory prediction + cut-in warning (junyi's nc_traj / nc_cutin, nc_class by junwoo)
+CSRCS               += $(NC_CNN_CORE_DIR)/nc_class.c
+CSRCS               += $(NC_CNN_CORE_DIR)/nc_traj.c
+CSRCS               += $(NC_CNN_CORE_DIR)/nc_cutin.c
 # C (seoyoung) functions: stub until the real nc_meas.c / nc_model.c / nc_rec.c are merged
 CSRCS               += nc_c_stub.c
 
