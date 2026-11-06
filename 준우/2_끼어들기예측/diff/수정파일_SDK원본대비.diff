@@ -1,0 +1,81 @@
+--- a/applications/common/nc_app_modules/cnn/core/nc_cnn_aiware_runtime.c
++++ b/applications/common/nc_app_modules/cnn/core/nc_cnn_aiware_runtime.c
+@@ -430,6 +430,7 @@
+         cnn_output.channel = tinfo->dim.ch;
+         cnn_output.data_type = tinfo->exponent?CNN_TILED_DT_FLOAT:CNN_TILED_DT_U8;
+         cnn_output.net_id = net_id;
++        cnn_output.time_stamp_us = time_stamp;
+ 
+         // copy tinfo
+         send_tinfo = (aiwTensorInfo *)malloc(sizeof(aiwTensorInfo));
+--- a/applications/common/nc_app_modules/cnn/core/nc_cnn_aiware_runtime.h
++++ b/applications/common/nc_app_modules/cnn/core/nc_cnn_aiware_runtime.h
+@@ -79,6 +79,7 @@
+     void *tiled_data;
+     uint32_t cam_ch;
+     E_NETWORK_UID net_id;
++    uint64_t time_stamp_us;   // frame time (nc_get_mono_us_time) when the input was taken
+ 
+     uint32_t index_of_total; // index of total tensor count
+     uint32_t total_tensor_cnt; // tensor total count : (ex) yolov5 has 3 tensor output by 1 frame
+--- a/applications/common/nc_app_modules/cnn/networks/yolov8/nc_cnn_yolov8_postprocess.c
++++ b/applications/common/nc_app_modules/cnn/networks/yolov8/nc_cnn_yolov8_postprocess.c
+@@ -42,6 +42,7 @@
+ #include "nc_ts_fsync_flipflop_buffers.h"
+ #ifdef USE_BYTETRACK
+ #include "nc_cnn_tracker.h"
++#include "nc_traj.h"
+ #endif
+ 
+ // #define SHOW_NMS_TIMEMEASURE
+@@ -206,6 +207,8 @@
+ #ifdef USE_BYTETRACK
+         // Execute tracker
+         nc_cnn_track(out_cnn_results, cnn_output->net_id, cnn_output->cam_ch);
++        // trajectory: Kalman measurement update with the tracked boxes (frame capture time)
++        nc_traj_update((int)cnn_output->cam_ch, cnn_output->net_id, out_cnn_results, cnn_output->time_stamp_us);
+ #endif
+         framecnt++;
+     }
+@@ -227,7 +230,7 @@
+     static uint64_t elapsed_ms = 0;
+     #endif
+ 
+-    uint64_t time_stamp = 0;
++    uint64_t time_stamp = cnn_output->time_stamp_us;
+     int buf_write_idx = 0;
+     static pp_result_buf *pp_buf = NULL;
+     static stCnnPostprocessingResults *yolov8_detect_results = NULL;
+--- a/applications/common/nc_app_modules/cnn/networks/ufld/nc_cnn_ufld_postprocess.c
++++ b/applications/common/nc_app_modules/cnn/networks/ufld/nc_cnn_ufld_postprocess.c
+@@ -712,7 +712,7 @@
+     static uint64_t start_time;
+     #endif
+ 
+-    uint64_t time_stamp = 0;
++    uint64_t time_stamp = cnn_output->time_stamp_us;
+     int buf_write_idx = 0;
+     static pp_result_buf *pp_buf = NULL;
+     static stCnnPostprocessingResults *ufld_results = NULL;
+--- a/applications/common/nc_app_modules/cnn/networks/pelee/nc_cnn_pelee_postprocess.c
++++ b/applications/common/nc_app_modules/cnn/networks/pelee/nc_cnn_pelee_postprocess.c
+@@ -259,7 +259,7 @@
+     static uint64_t elapsed_ms = 0;
+     #endif
+ 
+-    uint64_t time_stamp = 0;
++    uint64_t time_stamp = cnn_output->time_stamp_us;
+     int buf_write_idx = 0;
+     static pp_result_buf *pp_buf = NULL;
+     static stCnnPostprocessingResults *pelee_detect_results = NULL;
+--- a/applications/common/nc_app_modules/cnn/networks/nc_cnn_segmentation_postprocess.c
++++ b/applications/common/nc_app_modules/cnn/networks/nc_cnn_segmentation_postprocess.c
+@@ -74,7 +74,7 @@
+     static uint64_t elapsed_ms = 0;
+     #endif
+ 
+-    uint64_t time_stamp = 0;
++    uint64_t time_stamp = cnn_output->time_stamp_us;
+     int buf_write_idx = 0;
+     static pp_result_buf *pp_buf = NULL;
+     static stCnnPostprocessingResults *seg_results = NULL;
