@@ -1,4 +1,20 @@
 #!/bin/sh
+#
+#   ./run_app_wayland_npu.sh [video-file]
+#   e.g. ./run_app_wayland_npu.sh misc/image_npu/1105_kki.mov
+#   (no file: misc/image_npu/1920_1080_0001.mp4)
+
+if [ "$#" -gt 1 ]; then
+    echo "Usage: $0 [video-file]" >&2
+    exit 2
+fi
+
+# video file: absolute, relative to the current folder, or to the app folder
+VIDEO_FILE=${1:-}
+case "$VIDEO_FILE" in
+    ""|/*) ;;
+    *) [ -e "$VIDEO_FILE" ] && VIDEO_FILE="$PWD/$VIDEO_FILE" ;;
+esac
 
 SCRIPT_DIR=$(CDPATH= cd -P "$(dirname "$0")" && pwd) || exit 1
 
@@ -52,6 +68,10 @@ load_module nc_dmabuf_ctrl.ko nc_dmabuf_ctrl
 load_module nc_dsr_drv.ko nc_dsr_drv
 
 cd "$APP_DIR" || exit 1
+if [ -n "$VIDEO_FILE" ] && [ ! -r "$VIDEO_FILE" ]; then
+    echo "Video file not found or unreadable: $VIDEO_FILE" >&2
+    exit 1
+fi
 export XDG_RUNTIME_DIR=/var/run
 export WAYLAND_DISPLAY=wayland-1
 export LD_LIBRARY_PATH="$APP_DIR/misc/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
@@ -72,7 +92,7 @@ check_wayland || exit 1
 stop_stale_app app_wayland_npu
 
 # own session: Ctrl+C must not stop the video feeder before the app has exited
-APP_PATH="$APP_DIR" setsid "$LOOPBACK_SCRIPT" &
+APP_PATH="$APP_DIR" setsid "$LOOPBACK_SCRIPT" ${VIDEO_FILE:+"$VIDEO_FILE"} &
 LOOPBACK_PID=$!
 APP_PID=
 GOT_INT=0
