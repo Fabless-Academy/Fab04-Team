@@ -149,7 +149,10 @@ sleep 1
     grep "lane_class:" "$LOG1" | head -3
 
     section "cut-in (run 1)"
-    grep -h "\[nc_cutin\] config" "$LOG1" | head -1
+    grep -h "\[nc_cutin\] config" "$LOG1" | head -2
+    grep -h "\[LDW\] \(ego lane for\|TEST\)" "$LOG1" | head -2
+    echo "ego lane source changes: $(grep -c 'ego lane source' "$LOG1")   (held: $(grep -c 'source: .* -> held' "$LOG1"), virtual: $(grep -c 'source: .* -> virtual' "$LOG1"))"
+    echo "cut-in ON by lane: measured $(grep -c 'lane measured)' "$LOG1"), held $(grep -c 'lane held)' "$LOG1"), virtual $(grep -c 'lane virtual)' "$LOG1")"
     grep -hE "\[nc_cutin\].*(cut-in O|ego lane change)" "$LOG1" | head -40
     echo "cut-in ON: $(grep -c 'cut-in ON' "$LOG1")   nc_rec_trigger(1) calls: $(grep -c 'nc_rec_trigger(1)' "$LOG1")   (expect equal)"
     grep "\[nc_cutin\] ch0 stats" "$LOG1" | awk '{

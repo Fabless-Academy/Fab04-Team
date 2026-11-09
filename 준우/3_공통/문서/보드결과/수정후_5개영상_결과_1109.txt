@@ -1,0 +1,89 @@
+##### misc/image_npu/px/px_5915075.mp4 (32 s) /mnt/user_data/applications/ldw_check_0101_002440.txt
+cut-in ON: 2   nc_rec_trigger(1) calls: 1   (expect equal)
+fps: fps= 15
+LDW warn: 6  L-weak 0 L-strong 1 R-weak 5 R-strong 0  INVALID: 0
+src: ->detected 1 ->held 0 ->lead 0 ->virtual 0  lead picked 1 learned 1 dropped 1
+00:00:00.66 camera: offset +0.00m, lane width 3.50m, usual place learned (max 0.60m after 10s)
+00:00:02.20 ego lane source: none -> detected (y=864: 533-1113 px, last measured 533-1113, vp 899,620 k 2.376, lead none)
+00:00:02.20 INVALID -> NORMAL (left 1.65m, right 0.00m, offset +0.82m, vel +0.00m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, dashed vo
+00:00:02.20 NORMAL -> WARN_RIGHT(weak) (left 1.63m, right 0.02m, offset +0.80m, vel -0.09m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, 
+00:00:03.73 cut-in ON  class:3 id:1 (candidate 142 ms, 3 frames, lane measured)
+00:00:06.73 cut-in ON  class:1 id:2 (same vehicle as class:3 id:1, no new trigger)
+00:00:13.33 lead car class:1 id:2 picked (measured lane, bottom 913,751)
+00:00:13.80 lead car class:1 id:2 learned (offset -0.35m, width 0.38 of lane)
+00:00:16.93 NORMAL -> WARN_RIGHT(weak) (left 1.17m, right 0.48m, offset +0.34m, vel +0.19m/s, tlc 2.54s < 1.54s?, latency 35ms, class L1 R2, d
+00:00:20.46 usual place in lane +0.58m, correction +0.38m (camera offset)
+00:00:28.13 NORMAL -> WARN_RIGHT(weak) (left 1.04m, right 0.61m, offset +0.22m, vel +0.47m/s, tlc 1.29s < 1.54s?, latency 35ms, class L1 R2, d
+00:00:28.60 WARN_RIGHT -> WARN_LEFT(strong) (left 0.72m, right 0.93m, offset -0.10m, vel -0.91m/s, tlc 0.80s < 1.54s?, latency 35ms, class L1 
+00:00:29.13 WARN_LEFT -> WARN_RIGHT(weak) (left 1.32m, right 0.33m, offset +0.50m, vel +1.83m/s, tlc 0.18s < 1.54s?, latency 35ms, class L1 R2
+00:00:30.66 NORMAL -> WARN_RIGHT(weak) (left 1.25m, right 0.40m, offset +0.42m, vel -0.03m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, 
+
+##### misc/image_npu/sc/sc_city_lead.mp4 (45 s) /mnt/user_data/applications/ldw_check_0101_002531.txt
+cut-in ON: 1   nc_rec_trigger(1) calls: 1   (expect equal)
+fps: fps= 15
+LDW warn: 2  L-weak 0 L-strong 0 R-weak 2 R-strong 0  INVALID: 0
+src: ->detected 1 ->held 0 ->lead 0 ->virtual 0  lead picked 1 learned 1 dropped 0
+00:00:00.46 camera: offset +0.00m, lane width 3.50m, usual place learned (max 0.60m after 10s)
+00:00:01.53 ego lane source: none -> detected (y=864: 770-1085 px, last measured 770-1085, vp 905,718 k 2.153, lead none)
+00:00:01.53 INVALID -> NORMAL (left 1.18m, right 0.47m, offset +0.36m, vel +0.00m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, dashed vo
+00:00:01.53 NORMAL -> WARN_RIGHT(weak) (left 1.19m, right 0.46m, offset +0.36m, vel +0.04m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, 
+00:00:03.00 NORMAL -> WARN_RIGHT(weak) (left 1.16m, right 0.49m, offset +0.34m, vel +0.11m/s, tlc 4.54s < 1.54s?, latency 35ms, class L1 R2, d
+00:00:13.20 usual place in lane +0.42m, correction +0.22m (camera offset)
+00:00:13.73 lead car class:1 id:6 picked (measured lane, bottom 944,795)
+00:00:14.26 lead car class:1 id:6 learned (offset +0.26m, width 0.58 of lane)
+00:00:19.80 usual place in lane +0.32m, correction +0.12m (camera offset)
+00:00:28.46 usual place in lane +0.22m, correction +0.02m (camera offset)
+00:00:36.60 cut-in ON  class:1 id:5 (candidate 138 ms, 3 frames, lane measured)
+
+##### misc/image_npu/sc/sc_night_curve.mp4 (80 s) /mnt/user_data/applications/ldw_check_0101_002636.txt
+cut-in ON: 0   nc_rec_trigger(1) calls: 0   (expect equal)
+fps: fps= 15
+LDW warn: 8  L-weak 0 L-strong 8 R-weak 0 R-strong 0  INVALID: 0
+src: ->detected 1 ->held 0 ->lead 0 ->virtual 0  lead picked 0 learned 0 dropped 0
+00:00:00.46 camera: offset +0.00m, lane width 3.50m, usual place learned (max 0.60m after 10s)
+00:00:01.53 ego lane source: none -> detected (y=864: 730-1358 px, last measured 730-1358, vp 901,545 k 1.971, lead none)
+00:00:01.53 INVALID -> NORMAL (left 0.35m, right 1.30m, offset -0.47m, vel +0.00m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R1, dashed vo
+00:00:01.53 NORMAL -> WARN_LEFT(strong) (left 0.36m, right 1.29m, offset -0.47m, vel +0.03m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R1,
+00:00:09.66 NORMAL -> WARN_LEFT(strong) (left 0.05m, right 1.60m, offset -0.78m, vel +0.09m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R1,
+00:00:16.33 NORMAL -> WARN_LEFT(strong) (left 0.49m, right 1.16m, offset -0.33m, vel -0.07m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R-1
+00:00:18.33 usual place in lane -0.58m, correction -0.38m (camera offset)
+00:00:20.40 NORMAL -> WARN_LEFT(strong) (left 0.49m, right 1.16m, offset -0.33m, vel -0.08m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R1,
+00:00:26.00 usual place in lane -0.68m, correction -0.48m (camera offset)
+00:00:42.26 NORMAL -> WARN_LEFT(strong) (left 0.49m, right 1.16m, offset -0.34m, vel -0.14m/s, tlc 3.59s < 1.54s?, latency 35ms, class L1 R1, 
+00:00:46.86 NORMAL -> WARN_LEFT(strong) (left 0.50m, right 1.15m, offset -0.33m, vel +0.08m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R1,
+00:00:59.06 NORMAL -> WARN_LEFT(strong) (left 0.49m, right 1.16m, offset -0.33m, vel -0.08m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R1,
+00:01:11.26 NORMAL -> WARN_LEFT(strong) (left 0.57m, right 1.08m, offset -0.25m, vel -0.38m/s, tlc 1.52s < 1.54s?, latency 35ms, class L1 R1, 
+00:01:13.80 usual place in lane -0.78m, correction -0.58m (camera offset)
+
+##### default (40 s) /mnt/user_data/applications/ldw_check_0101_002815.txt
+cut-in ON: 0   nc_rec_trigger(1) calls: 0   (expect equal)
+fps: fps= 15
+LDW warn: 2  L-weak 0 L-strong 0 R-weak 1 R-strong 1  INVALID: 0
+src: ->detected 1 ->held 0 ->lead 0 ->virtual 0  lead picked 0 learned 0 dropped 0
+00:00:00.60 camera: offset +0.00m, lane width 3.50m, usual place learned (max 0.60m after 10s)
+00:00:02.13 ego lane source: none -> detected (y=864: 348-1411 px, last measured 348-1411, vp 937,456 k 2.606, lead none)
+00:00:02.13 INVALID -> NORMAL (left 1.09m, right 0.56m, offset +0.26m, vel +0.00m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, dashed vo
+00:00:14.33 NORMAL -> WARN_RIGHT(weak) (left 1.14m, right 0.51m, offset +0.31m, vel +0.43m/s, tlc 1.18s < 1.54s?, latency 35ms, class L2 R2, d
+00:00:27.06 NORMAL -> WARN_RIGHT(strong) (left 1.16m, right 0.49m, offset +0.33m, vel +0.08m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R1
+
+##### misc/image_npu/test3_1080p.mkv (30 s) /mnt/user_data/applications/ldw_check_0101_002915.txt
+cut-in ON: 3   nc_rec_trigger(1) calls: 3   (expect equal)
+fps: fps= 15
+LDW warn: 0  L-weak 0 L-strong 0 R-weak 0 R-strong 0  INVALID: 0
+src: ->detected 1 ->held 0 ->lead 0 ->virtual 0  lead picked 4 learned 4 dropped 3
+00:00:01.06 camera: offset +0.00m, lane width 3.50m, usual place learned (max 0.60m after 10s)
+00:00:02.06 ego lane source: none -> detected (y=864: 698-1243 px, last measured 698-1243, vp 969,701 k 3.343, lead none)
+00:00:02.06 INVALID -> NORMAL (left 0.76m, right 0.89m, offset -0.07m, vel +0.00m/s, tlc -1.00s < 1.54s?, latency 35ms, class L3 R1, dashed vo
+00:00:02.60 lead car class:1 id:1 picked (measured lane, bottom 996,783)
+00:00:03.13 lead car class:1 id:1 learned (offset +0.19m, width 0.51 of lane)
+00:00:06.20 lead car class:1 id:3 picked (measured lane, bottom 1036,834)
+00:00:06.66 lead car class:1 id:3 learned (offset +0.86m, width 0.50 of lane)
+00:00:09.73 cut-in ON  class:1 id:9 (candidate 136 ms, 3 frames, lane measured)
+00:00:14.86 lead car class:1 id:9 picked (measured lane, bottom 1042,832)
+00:00:15.40 lead car class:1 id:9 learned (offset +0.85m, width 0.49 of lane)
+00:00:18.46 cut-in ON  class:1 id:15 (candidate 136 ms, 3 frames, lane measured)
+00:00:23.60 lead car class:1 id:15 picked (measured lane, bottom 1042,832)
+00:00:23.60 lead car class:1 id:15 learned (offset +0.85m, width 0.49 of lane)
+00:00:27.20 cut-in ON  class:1 id:21 (candidate 136 ms, 3 frames, lane measured)
+
+ALL DONE
