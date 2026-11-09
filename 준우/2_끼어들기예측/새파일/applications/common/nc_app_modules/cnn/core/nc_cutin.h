@@ -66,6 +66,60 @@ extern "C" {
 #define NC_CUTIN_LC_JUMP_RATIO   (0.40f)  /* lane center jump > ratio * lane width = ego lane change */
 #define NC_CUTIN_LC_HOLD_MS      (500.0f) /* pause decisions after ego lane change (was 15 frames @30fps) */
 
+/* Ego lane when the lines are not seen (junwoo 11/06, from nc_ldw):
+ *   MEASURED : lines detected (one may come from the learned width)
+ *   HELD     : lines lost < 1.0 s: last lane moved by our lateral motion -> normal rules
+ *   VIRTUAL  : lines lost longer: 3.5 m lane at our usual place -> moving-in rule,
+ *              because the lane may be off by part of a lane width (curves, our
+ *              position in the lane) */
+#define NC_CUTIN_LANE_MEASURED   (0)
+#define NC_CUTIN_LANE_HELD       (1)
+#define NC_CUTIN_LANE_LEAD       (2)      /* lane rebuilt around the car ahead (11/06 step 4) */
+#define NC_CUTIN_LANE_VIRTUAL    (3)
+#define NC_CUTIN_LANE_SRC_MAX    NC_CUTIN_LANE_VIRTUAL /* env CUTIN_LANE_SRC: highest source used
+                                                        * 0 measured only (as before) / 1 +held /
+                                                        * 2 +lead / 3 +virtual */
+#define NC_CUTIN_VIRT_MARGIN     (0.10f)  /* future point margin on a virtual lane. 0.20 missed slow
+                                           * cut-ins in the PC test; 0.10 kept all no-warning cases */
+#define NC_CUTIN_VIRT_ON_MS      (100.0f) /* candidate time to turn ON on a virtual lane. 200 made the
+                                           * board warnings ~3 s late (tracker class flicker splits the
+                                           * candidate run) with no false warning to remove (11/06) */
+#define NC_CUTIN_LEAD_ON_MS      (100.0f) /* ... on a lane from the car ahead */
+
+/* Moving-in rule, LEAD / VIRTUAL lanes only. Those lanes can be off by ~10% of
+ * a lane width (board 11/06, test3: virtual lane 1214 px wide on the car's row,
+ * real 1079), so a close car right at the line already looks inside. Also a
+ * candidate: bottom-center within EDGE of a lane side and predicted to move at
+ * least MOVE lane widths toward the centre, ending inside with margin. */
+#define NC_CUTIN_EST_EDGE        (0.15f)
+#define NC_CUTIN_EST_MOVE        (0.25f)
+
+/* Assumed vehicle width for the lead lane when not learned yet (TRI_CHIMERA:
+ * class 1 = car, 2 = bus, 3 = truck) */
+#define NC_CUTIN_CAR_WIDTH_M     (1.8f)
+#define NC_CUTIN_BIG_WIDTH_M     (2.5f)
+
+/* Future bottom point = future center + half the FUTURE box height. The box
+ * height growth is measured per track (EMA over >= 150 ms steps). With the
+ * current height instead, a car we are closing in on was judged on a row too
+ * far up (narrower lane) and a cut-in while approaching was missed (PC test J). */
+#define NC_CUTIN_VH_MIN_DT_US    (150000ULL)
+/* Pulling away fast -> not a candidate (gap growing = no danger). Such a car
+ * converges to the vanishing point on screen, which the pixel prediction reads
+ * as moving into our lane (PC test M; board 11/06 city video: SUV next to us
+ * leaving from a stop, predicted u 1.3 -> 0.5).
+ *   ROW : lane on the predicted bottom row narrower than this ratio of the lane
+ *         on the bottom row now (lane width ~ 1/distance; same prediction as
+ *         the position, so no lag). Board: city SUV 0.46-0.65, real cut-ins
+ *         test3 0.84-0.91 (overtaking while cutting in).
+ *   BOX : box predicted smaller than this ratio (box growth is measured over
+ *         >= 150 ms, so it lags). Only for very fast: test3's real cut-in car
+ *         shrinks ~25%/s too (0.74), so 0.75 removed it. */
+#define NC_CUTIN_AWAY_ROW_RATIO  (0.60f)
+#define NC_CUTIN_AWAY_RATIO      (0.50f)
+#define NC_CUTIN_AWAY_HOLD_US    (1000000ULL) /* ... and for 1 s after (prediction lag) */
+#define NC_CUTIN_VH_ALPHA        (0.5f)
+
 /* Board bring-up: print decision counts once per second per channel.
  * Uncomment NC_CUTIN_STATS to enable (ldw_board_check.sh then shows the cut-in stats).
  * no_lane = far + lost + stale:
@@ -85,6 +139,10 @@ extern "C" {
  */
 int nc_ldw_get_ego_lane_x(int ch, float y, float *x_left, float *x_right, uint64_t *lane_ts_us);
 
+/* Same, plus HELD / LEAD / VIRTUAL lanes. src: NC_CUTIN_LANE_* */
+int nc_ldw_get_ego_lane_src_x(int ch, float y, float *x_left, float *x_right,
+                              uint64_t *lane_ts_us, int *src);
+
 void nc_cutin_reset(void);
 
 /* Tuning values in use (macro defaults, overridable by environment variables
@@ -99,6 +157,13 @@ void nc_cutin_reset(void);
  *   CUTIN_LC_HOLD_MS   NC_CUTIN_LC_HOLD_MS
  *   CUTIN_MIN_LANE_W   NC_CUTIN_MIN_LANE_W_PX
  *   CUTIN_LANE_STALE_MS NC_CUTIN_LANE_STALE_US / 1000 (minimum; 3 frame intervals if longer)
+ *   CUTIN_LANE_SRC     NC_CUTIN_LANE_SRC_MAX (0 measured / 1 +held / 2 +lead / 3 +virtual)
+ *   CUTIN_LEAD_ON_MS   NC_CUTIN_LEAD_ON_MS
+ *   CUTIN_EST_EDGE     NC_CUTIN_EST_EDGE
+ *   CUTIN_EST_MOVE     NC_CUTIN_EST_MOVE
+ *   CUTIN_AWAY_RATIO   NC_CUTIN_AWAY_RATIO (0 = off)
+ *   CUTIN_VIRT_MARGIN  NC_CUTIN_VIRT_MARGIN
+ *   CUTIN_VIRT_ON_MS   NC_CUTIN_VIRT_ON_MS
  * Read once, at the first frame (printed as "[nc_cutin] config: ..."). */
 float nc_cutin_get_horizon_ms(void);
 
