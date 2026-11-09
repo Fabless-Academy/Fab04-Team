@@ -161,6 +161,21 @@ int main(void) {
     g_yb0 = 950.f;  g_yb1 = 850.f; check("M2  overtakes and cuts in, pulling away slowly", 3.2f, 0.3f, 1);
     g_yb0 = 1000.f; g_yb1 = 600.f; check("M3  cuts in while pulling away fast", 3.2f, 0.3f, 2);
     g_ybsync = 0; g_yb0 = g_yb1 = 760.f; g_t1 = 7.f;
+    /* car right at our line, we close in (board 11/09, px bus: u_now ~1.15-1.2) */
+    printf("== next-lane car right at our line, we close in, lanes seen\n");
+    g_yb0 = 600.f; g_yb1 = 1000.f;
+    g_jit = 0.25f; check("N   at the line (u 1.15), jitter", 2.3f, 2.3f, 0);
+    check("N2  at the line, box pulled in 0.1 lane", 2.3f, 1.95f, 0); g_jit = 0.f;
+    g_t1 = 3.f; check("N3  at the line, cuts in over 2 s", 2.3f, 0.0f, 1); g_t1 = 7.f;
+    g_yb0 = g_yb1 = 760.f;
+    /* far cars (lane on the car's row ~330 px < CUTIN_SIDE_W): sideways check */
+    printf("== far cars (lane ~330 px on their row), lanes seen\n");
+    g_yb0 = g_yb1 = 580.f;
+    check("P1  far slow cut-in 0.58 m/s", 3.5f, 0.0f, 1);
+    g_t1 = 3.f; check("P2  far fast cut-in", 3.5f, 0.0f, 1); g_t1 = 7.f;
+    g_yb0 = 570.f; g_yb1 = 620.f; g_jit = 0.25f;
+    check("P3  far car at the line, box pulled in", 2.3f, 1.95f, 0); g_jit = 0.f;
+    g_yb0 = g_yb1 = 760.f;
     puts(fails ? "RESULT: FAIL" : "RESULT: PASS");
     return fails;
 }

@@ -50,7 +50,7 @@ extern "C" {
 #define NC_CUTIN_POINT_BOTH      (2)
 #define NC_CUTIN_POINT_DEFAULT   NC_CUTIN_POINT_CENTER   /* BOTH gave the same result on the 11/06 board videos */
 #define NC_CUTIN_MIN_ON_MS       (1000.0f) /* a warning stays on at least this long (was ~0.5 s) */
-#define NC_CUTIN_DUP_MS          (3000.0f) /* same place within this time = same vehicle, no 2nd trigger */
+#define NC_CUTIN_DUP_MS          (3000.0f) /* same track (or a new track where a gone one was) within this time = same vehicle, no 2nd trigger */
 #define NC_CUTIN_ON_MS           (100.0f) /* candidate this long in a row -> ON  (was 3 frames @30fps) */
 #define NC_CUTIN_MIN_ON_HITS     (3)      /* ...and at least this many candidate frames (junyi's 3) */
 #define NC_CUTIN_OFF_MS          (333.0f) /* not a candidate this long -> OFF  (was 10 frames @30fps) */
@@ -120,6 +120,34 @@ extern "C" {
 #define NC_CUTIN_AWAY_HOLD_US    (1000000ULL) /* ... and for 1 s after (prediction lag) */
 #define NC_CUTIN_VH_ALPHA        (0.5f)
 
+/* Far cars: must move sideways toward our lane (11/09, px video). A bus going
+ * straight right at our right line, ~17 m ahead (lane 210-250 px on its
+ * row), was judged as cutting in: as we close in, more of its side shows
+ * and the box grows toward our lane, so the box center and its 1 s
+ * prediction drift inward. In lane units (u) a real cut-in keeps moving in;
+ * the bus did not. Board, least-squares slope of u_now over the last 1 s:
+ *   px bus (no cut-in)      +0.02..+0.11 lane widths/s toward our lane
+ *   px silver car (cut-in)  +0.34..+0.38
+ *   test3 cut-ins           +0.08..+0.13, but lane ~1060 px (car right in
+ *                           front, box cut by the screen edge) -> not checked
+ * So: lane on the car's row narrower than SIDE_W_PX -> candidate only if the
+ * speed toward our lane is >= MIN_VU (0.15 = ~0.5 m/s on a 3.5 m lane).
+ * Shorter windows react to one box jump (bus 0.4 s: +0.31).
+ * Not enough history (new track, lane source changed) -> not checked. */
+#define NC_CUTIN_U_HIST          (24)
+#define NC_CUTIN_VU_WIN_MS       (1000.0f)
+#define NC_CUTIN_VU_MIN_SPAN_MS  (500.0f)
+#define NC_CUTIN_MIN_VU          (0.15f)
+#define NC_CUTIN_SIDE_W_PX       (400.0f)
+
+/* Track key. junyi's tracker (11/09) tracks car/bus/truck in one tracker and
+ * keeps the number when the class flips -> key by track number only (0).
+ * Per-class ByteTrack (numbers can repeat across classes) -> class + number (1).
+ * Build flag -DNC_CUTIN_ID_PER_CLASS=1 or env CUTIN_ID_PER_CLASS sets it. */
+#ifndef NC_CUTIN_ID_PER_CLASS
+#define NC_CUTIN_ID_PER_CLASS    (0)
+#endif
+
 /* Board bring-up: print decision counts once per second per channel.
  * Uncomment NC_CUTIN_STATS to enable (ldw_board_check.sh then shows the cut-in stats).
  * no_lane = far + lost + stale:
@@ -164,6 +192,10 @@ void nc_cutin_reset(void);
  *   CUTIN_AWAY_RATIO   NC_CUTIN_AWAY_RATIO (0 = off)
  *   CUTIN_VIRT_MARGIN  NC_CUTIN_VIRT_MARGIN
  *   CUTIN_VIRT_ON_MS   NC_CUTIN_VIRT_ON_MS
+ *   CUTIN_MIN_VU       NC_CUTIN_MIN_VU (0 = off)
+ *   CUTIN_VU_WIN_MS    NC_CUTIN_VU_WIN_MS
+ *   CUTIN_SIDE_W       NC_CUTIN_SIDE_W_PX
+ *   CUTIN_ID_PER_CLASS NC_CUTIN_ID_PER_CLASS
  * Read once, at the first frame (printed as "[nc_cutin] config: ..."). */
 float nc_cutin_get_horizon_ms(void);
 

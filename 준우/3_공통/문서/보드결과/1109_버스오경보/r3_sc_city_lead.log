@@ -1,0 +1,156 @@
+Feeding /mnt/user_data/applications/misc/image_npu/sc/sc_city_lead.mp4 -> /dev/video11 (x1) at 15 fps
+ffmpeg version 4.4.2 Copyright (c) 2000-2021 the FFmpeg developers
+  built with gcc 10.3.0 (Buildroot v1.02.00-30-g1c18946c4-dirty)
+  configuration: --enable-cross-compile --cross-prefix=/media/data2/hyeseong/working/apache6/temp3/linux-apache6/build-output/buildroot/host/bin/aarch64-buildroot-linux-gnu- --sysroot=/media/data2/hyeseong/working/apache6/temp3/linux-apache6/build-output/buildroot/host/aarch64-buildroot-linux-gnu/sysroot --host-cc=/usr/bin/gcc --arch=aarch64 --target-os=linux --disable-stripping --pkg-config=/media/data2/hyeseong/working/apache6/temp3/linux-apache6/build-output/buildroot/host/bin/pkg-config --enable-static --enable-shared --prefix=/usr --enable-avfilter --disable-version3 --enable-logging --enable-optimizations --disable-extra-warnings --enable-avdevice --enable-avcodec --enable-avformat --enable-network --disable-gray --enable-swscale-alpha --disable-small --enable-dct --enable-fft --enable-mdct --enable-rdft --disable-crystalhd --disable-dxva2 --enable-runtime-cpudetect --disable-hardcoded-tables --disable-mipsdsp --disable-mipsdspr2 --disable-msa --enable-hwaccels --disable-cuda --disable-cuvid --disable-nvenc --disable-avisynth --disable-frei0r --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-libdc1394 --disable-libgsm --disable-libilbc --disable-libvo-amrwbenc --disable-symver --disable-doc --disable-gpl --disable-nonfree --enable-ffmpeg --disable-ffplay --enable-libv4l2 --disable-avresample --disable-ffprobe --disable-libxcb --disable-postproc --enable-swscale --enable-indevs --disable-alsa --enable-outdevs --enable-pthreads --enable-zlib --disable-bzlib --disable-libfdk-aac --disable-libcdio --disable-gnutls --enable-openssl --enable-libdrm --disable-libopenh264 --disable-vaapi --disable-vdpau --disable-mmal --disable-omx --disable-omx-rpi --disable-libopencv --disable-libopus --disable-libvpx --disable-libass --disable-libbluray --disable-libmfx --disable-librtmp --disable-libmp3lame --disable-libmodplug --disable-libspeex --disable-libtheora --disable-iconv --enable-libfreetype --enable-fontconfig --disable-libopenjpeg --disable-libx264 --disable-libx265 --disable-libdav1d --disable-x86asm --disable-mmx --disable-sse --disable-sse2 --disable-sse3 --disable-ssse3 --disable-sse4 --disable-sse42 --disable-avx --disable-avx2 --disable-armv6 --disable-armv6t2 --enable-vfp --enable-neon --disable-altivec --extra-libs=-latomic --enable-pic --cpu=cortex-a76
+  libavutil      56. 70.100 / 56. 70.100
+  libavcodec     58.134.100 / 58.134.100
+  libavformat    58. 76.100 / 58. 76.100
+  libavdevice    58. 13.100 / 58. 13.100
+  libavfilter     7.110.100 /  7.110.100
+  libswscale      5.  9.100 /  5.  9.100
+  libswresample   3.  9.100 /  3.  9.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/mnt/user_data/applications/misc/image_npu/sc/sc_city_lead.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2mp41
+    encoder         : Lavf58.76.100
+  Duration: 00:00:45.00, start: 0.000000, bitrate: 2240 kb/s
+  Stream #0:0(und): Video: mpeg4 (Simple Profile) (mp4v / 0x7634706D), yuv420p(tv, bt709), 1920x1080 [SAR 1:1 DAR 16:9], 2240 kb/s, 15 fps, 15 tbr, 15360 tbn, 15 tbc (default)
+    Metadata:
+      handler_name    : L-SMASH Video Handler
+      vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (mpeg4 (native) -> rawvideo (native))
+Press [q] to stop, [?] for help
+[swscaler @ 0x13b20810] No accelerated colorspace conversion found from yuv420p to rgb24.
+Output #0, video4linux2,v4l2, to '/dev/video11':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2mp41
+    encoder         : Lavf58.76.100
+  Stream #0:0(und): Video: rawvideo (RGB[24] / 0x18424752), rgb24(pc, gbr/bt709/bt709, progressive), 1920x1080 [SAR 1:1 DAR 16:9], q=2-31, 746496 kb/s, 15 fps, 15 tbn (default)
+    Metadata:
+      handler_name    : L-SMASH Video Handler
+      vendor_id       : [0][0][0][0]
+      encoder         : Lavc58.134.100 rawvideo
+frame=    1 fps=0.0 q=-0.0 size=N/A time=00:00:00.06 bitrate=N/A speed=0.142x    frame=    7 fps=0.0 q=-0.0 size=N/A time=00:00:00.46 bitrate=N/A speed=0.478x    [LDW] config: warn_margin=0.50m tlc<0.80+lat+0.70s (dist<1.50m, vel>0.10m/s) trigger=2 frames ref_y=864 cam_x=960 dashed_class=2
+[LDW] camera: offset +0.00m, lane width 3.50m, usual place learned (max 0.60m after 10s)
+[LDW] ego lane for cut-in: measured <=0.2s, held <=1.0s, then lead car (>=1 s) / virtual
+[32m[app] Driver Info[0m
+[32m[app] video_width x video_height : 1920 x 1080[0m
+
+ USER CONFIG
+--------------------------------
+ Channel		video11	
+--------------------------------
+ data_idx		CNN 	
+ dma_mode		INTERLEAVE
+ img_process		DS        
+ pixformat		RGB3	
+ crop_x_start		-	
+ crop_y_start		-	
+ crop_width		-	
+ crop_height		-	
+ ds_width		1920	
+ ds_height		1080	
+--------------------------------
+[Info] nc_tsfs_ff_create_buffers() called... owner(0) each buffer size(52352)....
+[Info] nc_tsfs_ff_create_buffers() called... owner(4) each buffer size(52352)....
+[Info] nc_tsfs_ff_create_buffers() called... owner(8) each buffer size(52352)....
+aiWare Runtime version:  2.5.3
+aiwModule Version: 1.3.4
+Opening device
+<nc_localize_path> misc/networks/trichimera/trichimera_640x384_a6sr_aiw4939.aiwbin to ./misc/networks/trichimera/trichimera_640x384_a6sr_aiw4939.aiwbin
+Loading binary_data : ./misc/networks/trichimera/trichimera_640x384_a6sr_aiw4939.aiwbin
+frame=   15 fps= 10 q=-0.0 size=N/A time=00:00:01.00 bitrate=N/A speed=0.668x    frame=   23 fps= 11 q=-0.0 size=N/A time=00:00:01.53 bitrate=N/A speed=0.766x    <nc_localize_path> misc/trichimera_640x384_a6sr_aiw4939.ini to ./misc/trichimera_640x384_a6sr_aiw4939.ini
+
+Init ByteTrack : fps(30), max class cnt(6) ......!
+aiw finish
+create tasks
+CNN TASK RUN!!
+++PP TASK RUN
+[nc_cutin] config: point=center min_on=1000ms dup=3000ms horizon=1000ms margin=0.10 on=100ms(>=3 hits) off=333ms lc_hold=500ms min_lane_w=200px lane_stale=max(200ms, 3 frames)
+[nc_cutin] config: lane source=measured+held+lead+virtual (lead: on=100ms, virtual: margin=0.10 on=100ms, moving-in edge=0.15 move=0.25, pulling away < 0.50, far car (lane < 400 px) sideways >= 0.15 lane/s over 1000 ms, track key=class+id)
+[LDW] ch0 ego lane source: none -> detected (y=864: 770-1085 px, last measured 770-1085, vp 905,718 k 2.153, lead none)
+[LDW] ch0 INVALID -> NORMAL (left 1.18m, right 0.47m, offset +0.36m, vel +0.00m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, dashed vote L0.00 R1.00)
+[STUB] nc_rec_trigger(0)
+[LDW] ch0 NORMAL -> WARN_RIGHT(weak) (left 1.19m, right 0.46m, offset +0.36m, vel +0.03m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, dashed vote L0.00 R1.00)
+frame=   30 fps= 12 q=-0.0 size=N/A time=00:00:02.00 bitrate=N/A speed=0.797x    [nc_cutin] ch0 away class:1 id:4 box h 492 -> 983 (2.00, vh 666 px/s) row lane 754 -> 415 (0.55) u_now -0.48 u_fut -2.75
+frame=   38 fps= 13 q=-0.0 size=N/A time=00:00:02.53 bitrate=N/A speed=0.837x    [nc_cutin] ch0 cand class:1 id:5 u_now:1.26 u_fut:0.89 vu:-0.22/s edge:0.00>0.00 box:1360,701,447,380 fut:1272,1065 lane@1081:568-1376
+[nc_cutin] ch0 stats/17fr eval:78 hold:0 no_lane:33 far:32 lost:1 stale:0 inside:0 not_enter:44 cand:1 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+[LDW] ch0 WARN_RIGHT -> NORMAL (left 1.12m, right 0.53m, offset +0.30m, vel +0.11m/s, tlc 4.84s < 1.54s?, latency 35ms, class L1 R2, dashed vote L0.00 R1.00)
+frame=   46 fps= 13 q=-0.0 size=N/A time=00:00:03.06 bitrate=N/A speed=0.868x    [STUB] nc_rec_trigger(0)
+[LDW] ch0 NORMAL -> WARN_RIGHT(weak) (left 1.16m, right 0.49m, offset +0.34m, vel +0.11m/s, tlc 4.39s < 1.54s?, latency 35ms, class L1 R2, dashed vote L0.00 R1.00)
+[nc_cutin] ch0 away class:1 id:2 box h 467 -> 467 (1.00, vh 0 px/s) row lane 802 -> 463 (0.58) u_now -0.45 u_fut -2.43
+[nc_cutin] ch0 cand class:1 id:5 u_now:1.30 u_fut:0.82 vu:+0.07/s edge:0.00>0.00 box:1262,696,486,337 fut:1078,922 lane@1033:602-1295
+[nc_cutin] ch0 away class:1 id:5 box h 320 -> 188 (0.59, vh -133 px/s) row lane 658 -> 318 (0.48) u_now 1.29 u_fut 0.61
+[nc_cutin] ch0 away class:1 id:5 box h 309 -> 176 (0.57, vh -133 px/s) row lane 625 -> 248 (0.40) u_now 1.32 u_fut 1.08
+frame=   53 fps= 13 q=-0.0 size=N/A time=00:00:03.53 bitrate=N/A speed=0.874x    [nc_cutin] ch0 away class:1 id:5 box h 295 -> 162 (0.55, vh -133 px/s) row lane 595 -> 239 (0.40) u_now 1.35 u_fut 1.49
+[nc_cutin] ch0 away class:1 id:5 box h 286 -> 143 (0.50, vh -152 px/s) row lane 572 -> 215 (0.38) u_now 1.34 u_fut 1.31
+[nc_cutin] ch0 stats/15fr eval:75 hold:0 no_lane:23 far:23 lost:0 stale:0 inside:0 not_enter:50 cand:2 on:0 held:0 lead:0 virtual:0 movein:0 away:1 side:0 fps:14.8
+[nc_cutin] ch0 away class:1 id:5 box h 258 -> 129 (0.50, vh -146 px/s) row lane 497 -> 213 (0.43) u_now 1.40 u_fut 1.48
+[nc_cutin] ch0 away class:1 id:5 box h 252 -> 126 (0.50, vh -146 px/s) row lane 485 -> 227 (0.47) u_now 1.40 u_fut 1.46
+[nc_cutin] ch0 away class:1 id:5 box h 245 -> 122 (0.50, vh -146 px/s) row lane 472 -> 224 (0.47) u_now 1.40 u_fut 1.47
+frame=   61 fps= 13 q=-0.0 size=N/A time=00:00:04.06 bitrate=N/A speed=0.891x    [nc_cutin] ch0 away class:1 id:5 box h 234 -> 117 (0.50, vh -132 px/s) row lane 456 -> 233 (0.51) u_now 1.40 u_fut 1.45
+[nc_cutin] ch0 away class:1 id:5 box h 228 -> 114 (0.50, vh -132 px/s) row lane 441 -> 202 (0.46) u_now 1.41 u_fut 1.61
+[nc_cutin] ch0 away class:1 id:5 box h 202 -> 101 (0.50, vh -111 px/s) row lane 393 -> 220 (0.56) u_now 1.42 u_fut 1.42
+[nc_cutin] ch0 away class:1 id:5 box h 191 -> 96 (0.50, vh -98 px/s) row lane 375 -> 209 (0.56) u_now 1.43 u_fut 1.59
+frame=   69 fps= 14 q=-0.0 size=N/A time=00:00:04.60 bitrate=N/A speed=0.907x    [nc_cutin] ch0 away class:1 id:1 box h 446 -> 446 (1.00, vh 0 px/s) row lane 779 -> 234 (0.30) u_now -0.41 u_fut -4.52
+[nc_cutin] ch0 stats/16fr eval:70 hold:0 no_lane:31 far:30 lost:1 stale:0 inside:0 not_enter:39 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+frame=   76 fps= 14 q=-0.0 size=N/A time=00:00:05.06 bitrate=N/A speed=0.908x    frame=   84 fps= 14 q=-0.0 size=N/A time=00:00:05.60 bitrate=N/A speed=0.919x    [nc_cutin] ch0 stats/16fr eval:61 hold:0 no_lane:26 far:26 lost:0 stale:0 inside:0 not_enter:35 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.9
+frame=   91 fps= 14 q=-0.0 size=N/A time=00:00:06.06 bitrate=N/A speed=0.919x    frame=   99 fps= 14 q=-0.0 size=N/A time=00:00:06.60 bitrate=N/A speed=0.929x    [nc_cutin] ch0 stats/16fr eval:45 hold:0 no_lane:23 far:23 lost:0 stale:0 inside:0 not_enter:22 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.2
+frame=  107 fps= 14 q=-0.0 size=N/A time=00:00:07.13 bitrate=N/A speed=0.935x    frame=  115 fps= 14 q=-0.0 size=N/A time=00:00:07.66 bitrate=N/A speed=0.942x    [nc_cutin] ch0 stats/15fr eval:31 hold:0 no_lane:30 far:30 lost:0 stale:0 inside:0 not_enter:1 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.9
+frame=  122 fps= 14 q=-0.0 size=N/A time=00:00:08.13 bitrate=N/A speed=0.941x    frame=  130 fps= 14 q=-0.0 size=N/A time=00:00:08.66 bitrate=N/A speed=0.946x    [nc_cutin] ch0 stats/16fr eval:38 hold:0 no_lane:38 far:38 lost:0 stale:0 inside:0 not_enter:0 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.2
+frame=  138 fps= 14 q=-0.0 size=N/A time=00:00:09.20 bitrate=N/A speed=0.951x    frame=  145 fps= 14 q=-0.0 size=N/A time=00:00:09.66 bitrate=N/A speed=0.95x    [nc_cutin] ch0 stats/15fr eval:45 hold:0 no_lane:45 far:45 lost:0 stale:0 inside:0 not_enter:0 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.8
+frame=  153 fps= 14 q=-0.0 size=N/A time=00:00:10.20 bitrate=N/A speed=0.954x    frame=  160 fps= 14 q=-0.0 size=N/A time=00:00:10.66 bitrate=N/A speed=0.953x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:48 far:48 lost:0 stale:0 inside:0 not_enter:0 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.0
+frame=  168 fps= 14 q=-0.0 size=N/A time=00:00:11.20 bitrate=N/A speed=0.957x    [LDW] ch0 WARN_RIGHT -> NORMAL (left 1.45m, right 0.20m, offset +0.62m, vel -0.11m/s, tlc 13.39s < 1.54s?, latency 35ms, class L2 R2, dashed vote L0.90 R0.99)
+frame=  176 fps= 14 q=-0.0 size=N/A time=00:00:11.73 bitrate=N/A speed=0.961x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:48 far:48 lost:0 stale:0 inside:0 not_enter:0 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.9
+frame=  183 fps= 14 q=-0.0 size=N/A time=00:00:12.20 bitrate=N/A speed=0.959x    frame=  191 fps= 14 q=-0.0 size=N/A time=00:00:12.73 bitrate=N/A speed=0.963x    frame=  199 fps= 14 q=-0.0 size=N/A time=00:00:13.26 bitrate=N/A speed=0.966x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:43 far:43 lost:0 stale:0 inside:0 not_enter:5 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+[LDW] usual place in lane +0.42m, correction +0.22m (camera offset)
+frame=  206 fps= 14 q=-0.0 size=N/A time=00:00:13.73 bitrate=N/A speed=0.965x    [LDW] ch0 lead car class:1 id:6 picked (measured lane, bottom 944,795)
+frame=  214 fps= 15 q=-0.0 size=N/A time=00:00:14.26 bitrate=N/A speed=0.967x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:32 far:32 lost:0 stale:0 inside:0 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.8
+[LDW] ch0 lead car class:1 id:6 learned (offset +0.26m, width 0.58 of lane)
+frame=  221 fps= 14 q=-0.0 size=N/A time=00:00:14.73 bitrate=N/A speed=0.965x    frame=  229 fps= 15 q=-0.0 size=N/A time=00:00:15.26 bitrate=N/A speed=0.968x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:31 far:31 lost:0 stale:0 inside:1 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+frame=  237 fps= 15 q=-0.0 size=N/A time=00:00:15.80 bitrate=N/A speed=0.971x    frame=  244 fps= 15 q=-0.0 size=N/A time=00:00:16.26 bitrate=N/A speed=0.97x    [nc_cutin] ch0 stats/15fr eval:45 hold:0 no_lane:17 far:17 lost:0 stale:0 inside:13 not_enter:15 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.9
+frame=  252 fps= 15 q=-0.0 size=N/A time=00:00:16.80 bitrate=N/A speed=0.972x    frame=  259 fps= 15 q=-0.0 size=N/A time=00:00:17.26 bitrate=N/A speed=0.97x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:16 far:16 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+frame=  267 fps= 15 q=-0.0 size=N/A time=00:00:17.80 bitrate=N/A speed=0.972x    frame=  275 fps= 15 q=-0.0 size=N/A time=00:00:18.33 bitrate=N/A speed=0.974x    [nc_cutin] ch0 stats/15fr eval:45 hold:0 no_lane:15 far:15 lost:0 stale:0 inside:15 not_enter:15 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.9
+frame=  283 fps= 15 q=-0.0 size=N/A time=00:00:18.86 bitrate=N/A speed=0.976x    frame=  290 fps= 15 q=-0.0 size=N/A time=00:00:19.33 bitrate=N/A speed=0.974x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:6 far:6 lost:0 stale:0 inside:16 not_enter:26 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.2
+frame=  298 fps= 15 q=-0.0 size=N/A time=00:00:19.86 bitrate=N/A speed=0.976x    [LDW] usual place in lane +0.32m, correction +0.12m (camera offset)
+frame=  306 fps= 15 q=-0.0 size=N/A time=00:00:20.40 bitrate=N/A speed=0.978x    [nc_cutin] ch0 stats/15fr eval:45 hold:0 no_lane:6 far:6 lost:0 stale:0 inside:15 not_enter:24 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.9
+frame=  313 fps= 15 q=-0.0 size=N/A time=00:00:20.86 bitrate=N/A speed=0.976x    frame=  321 fps= 15 q=-0.0 size=N/A time=00:00:21.40 bitrate=N/A speed=0.977x    [nc_cutin] ch0 stats/16fr eval:37 hold:0 no_lane:2 far:2 lost:0 stale:0 inside:16 not_enter:19 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.5
+frame=  328 fps= 15 q=-0.0 size=N/A time=00:00:21.86 bitrate=N/A speed=0.976x    frame=  336 fps= 15 q=-0.0 size=N/A time=00:00:22.40 bitrate=N/A speed=0.978x    [nc_cutin] ch0 stats/16fr eval:32 hold:0 no_lane:0 far:0 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.9
+frame=  344 fps= 15 q=-0.0 size=N/A time=00:00:22.93 bitrate=N/A speed=0.98x    frame=  351 fps= 15 q=-0.0 size=N/A time=00:00:23.40 bitrate=N/A speed=0.979x    [nc_cutin] ch0 stats/16fr eval:32 hold:0 no_lane:0 far:0 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.2
+frame=  359 fps= 15 q=-0.0 size=N/A time=00:00:23.93 bitrate=N/A speed=0.98x    frame=  367 fps= 15 q=-0.0 size=N/A time=00:00:24.46 bitrate=N/A speed=0.981x    [nc_cutin] ch0 stats/15fr eval:30 hold:0 no_lane:0 far:0 lost:0 stale:0 inside:15 not_enter:15 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.8
+frame=  374 fps= 15 q=-0.0 size=N/A time=00:00:24.93 bitrate=N/A speed=0.98x    frame=  382 fps= 15 q=-0.0 size=N/A time=00:00:25.46 bitrate=N/A speed=0.981x    [nc_cutin] ch0 stats/16fr eval:32 hold:0 no_lane:0 far:0 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.8
+frame=  390 fps= 15 q=-0.0 size=N/A time=00:00:26.00 bitrate=N/A speed=0.982x    frame=  397 fps= 15 q=-0.0 size=N/A time=00:00:26.46 bitrate=N/A speed=0.981x    [nc_cutin] ch0 stats/16fr eval:32 hold:0 no_lane:0 far:0 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.8
+frame=  405 fps= 15 q=-0.0 size=N/A time=00:00:27.00 bitrate=N/A speed=0.983x    frame=  412 fps= 15 q=-0.0 size=N/A time=00:00:27.46 bitrate=N/A speed=0.982x    [nc_cutin] ch0 stats/16fr eval:32 hold:0 no_lane:0 far:0 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.2
+frame=  420 fps= 15 q=-0.0 size=N/A time=00:00:28.00 bitrate=N/A speed=0.983x    frame=  427 fps= 15 q=-0.0 size=N/A time=00:00:28.46 bitrate=N/A speed=0.982x    [LDW] usual place in lane +0.22m, correction +0.02m (camera offset)
+[nc_cutin] ch0 stats/15fr eval:42 hold:0 no_lane:12 far:12 lost:0 stale:0 inside:15 not_enter:15 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.8
+frame=  435 fps= 15 q=-0.0 size=N/A time=00:00:29.00 bitrate=N/A speed=0.983x    frame=  443 fps= 15 q=-0.0 size=N/A time=00:00:29.53 bitrate=N/A speed=0.984x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:16 far:16 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+frame=  450 fps= 15 q=-0.0 size=N/A time=00:00:30.00 bitrate=N/A speed=0.984x    frame=  458 fps= 15 q=-0.0 size=N/A time=00:00:30.53 bitrate=N/A speed=0.985x    [nc_cutin] ch0 stats/15fr eval:45 hold:0 no_lane:15 far:15 lost:0 stale:0 inside:15 not_enter:15 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.8
+frame=  465 fps= 15 q=-0.0 size=N/A time=00:00:31.00 bitrate=N/A speed=0.984x    frame=  473 fps= 15 q=-0.0 size=N/A time=00:00:31.53 bitrate=N/A speed=0.985x    frame=  481 fps= 15 q=-0.0 size=N/A time=00:00:32.06 bitrate=N/A speed=0.986x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:16 far:16 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+frame=  488 fps= 15 q=-0.0 size=N/A time=00:00:32.53 bitrate=N/A speed=0.985x    frame=  496 fps= 15 q=-0.0 size=N/A time=00:00:33.06 bitrate=N/A speed=0.985x    [nc_cutin] ch0 stats/15fr eval:45 hold:0 no_lane:15 far:15 lost:0 stale:0 inside:15 not_enter:15 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+frame=  504 fps= 15 q=-0.0 size=N/A time=00:00:33.60 bitrate=N/A speed=0.986x    frame=  511 fps= 15 q=-0.0 size=N/A time=00:00:34.06 bitrate=N/A speed=0.985x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:16 far:16 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.8
+frame=  519 fps= 15 q=-0.0 size=N/A time=00:00:34.60 bitrate=N/A speed=0.986x    frame=  526 fps= 15 q=-0.0 size=N/A time=00:00:35.06 bitrate=N/A speed=0.986x    [nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:16 far:16 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+frame=  534 fps= 15 q=-0.0 size=N/A time=00:00:35.60 bitrate=N/A speed=0.986x    frame=  542 fps= 15 q=-0.0 size=N/A time=00:00:36.13 bitrate=N/A speed=0.987x    [nc_cutin] ch0 stats/16fr eval:51 hold:0 no_lane:19 far:19 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.8
+frame=  549 fps= 15 q=-0.0 size=N/A time=00:00:36.60 bitrate=N/A speed=0.986x    [nc_cutin] ch0 cand class:1 id:5 u_now:1.27 u_fut:0.76 vu:+0.01/s edge:0.00>0.00 box:1239,679,554,339 fut:1152,991 lane@1018:666-1337
+[nc_cutin] ch0 cand class:1 id:5 u_now:1.21 u_fut:0.59 vu:-0.04/s edge:0.00>0.00 box:1203,680,551,337 fut:1053,997 lane@1017:666-1336
+[nc_cutin] ch0 cand class:1 id:5 u_now:1.22 u_fut:0.84 vu:-0.07/s edge:0.00>0.00 box:1205,682,545,333 fut:1209,998 lane@1015:668-1333
+[nc_cutin] ch0 cut-in ON  class:1 id:5 (candidate 138 ms, 3 frames, lane measured)
+[STUB] nc_rec_trigger(1)
+frame=  557 fps= 15 q=-0.0 size=N/A time=00:00:37.13 bitrate=N/A speed=0.987x    [nc_cutin] ch0 stats/16fr eval:64 hold:0 no_lane:18 far:18 lost:0 stale:0 inside:16 not_enter:27 cand:3 on:1 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+frame=  564 fps= 15 q=-0.0 size=N/A time=00:00:37.60 bitrate=N/A speed=0.986x    [nc_cutin] ch0 cut-in OFF class:1 id:5
+frame=  572 fps= 15 q=-0.0 size=N/A time=00:00:38.13 bitrate=N/A speed=0.987x    [nc_cutin] ch0 stats/16fr eval:66 hold:0 no_lane:34 far:34 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.9
+[nc_cutin] ch0 away class:1 id:5 box h 219 -> 110 (0.50, vh -116 px/s) row lane 446 -> 229 (0.51) u_now 1.35 u_fut 1.74
+[nc_cutin] ch0 away class:1 id:5 box h 216 -> 108 (0.50, vh -116 px/s) row lane 438 -> 230 (0.52) u_now 1.35 u_fut 1.70
+[nc_cutin] ch0 away class:1 id:5 box h 212 -> 106 (0.50, vh -116 px/s) row lane 427 -> 229 (0.54) u_now 1.35 u_fut 1.64
+frame=  580 fps= 15 q=-0.0 size=N/A time=00:00:38.66 bitrate=N/A speed=0.988x    [app] shutting down
+EXIT CNN_TASK!!
+EXIT PP_TASK!!
+[app] exit
+frame=  587 fps= 15 q=-0.0 size=N/A time=00:00:39.13 bitrate=N/A speed=0.987x    Stopping video feeder (pid 31164)
+frame=  589 fps= 15 q=-0.0 Lsize=N/A time=00:00:39.26 bitrate=N/A speed=0.986x    
+video:3578175kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+Exiting normally, received signal 15.

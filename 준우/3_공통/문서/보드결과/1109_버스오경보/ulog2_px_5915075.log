@@ -1,0 +1,554 @@
+Feeding /mnt/user_data/applications/misc/image_npu/px/px_5915075.mp4 -> /dev/video11 (x1) at 15 fps
+ffmpeg version 4.4.2 Copyright (c) 2000-2021 the FFmpeg developers
+  built with gcc 10.3.0 (Buildroot v1.02.00-30-g1c18946c4-dirty)
+  configuration: --enable-cross-compile --cross-prefix=/media/data2/hyeseong/working/apache6/temp3/linux-apache6/build-output/buildroot/host/bin/aarch64-buildroot-linux-gnu- --sysroot=/media/data2/hyeseong/working/apache6/temp3/linux-apache6/build-output/buildroot/host/aarch64-buildroot-linux-gnu/sysroot --host-cc=/usr/bin/gcc --arch=aarch64 --target-os=linux --disable-stripping --pkg-config=/media/data2/hyeseong/working/apache6/temp3/linux-apache6/build-output/buildroot/host/bin/pkg-config --enable-static --enable-shared --prefix=/usr --enable-avfilter --disable-version3 --enable-logging --enable-optimizations --disable-extra-warnings --enable-avdevice --enable-avcodec --enable-avformat --enable-network --disable-gray --enable-swscale-alpha --disable-small --enable-dct --enable-fft --enable-mdct --enable-rdft --disable-crystalhd --disable-dxva2 --enable-runtime-cpudetect --disable-hardcoded-tables --disable-mipsdsp --disable-mipsdspr2 --disable-msa --enable-hwaccels --disable-cuda --disable-cuvid --disable-nvenc --disable-avisynth --disable-frei0r --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-libdc1394 --disable-libgsm --disable-libilbc --disable-libvo-amrwbenc --disable-symver --disable-doc --disable-gpl --disable-nonfree --enable-ffmpeg --disable-ffplay --enable-libv4l2 --disable-avresample --disable-ffprobe --disable-libxcb --disable-postproc --enable-swscale --enable-indevs --disable-alsa --enable-outdevs --enable-pthreads --enable-zlib --disable-bzlib --disable-libfdk-aac --disable-libcdio --disable-gnutls --enable-openssl --enable-libdrm --disable-libopenh264 --disable-vaapi --disable-vdpau --disable-mmal --disable-omx --disable-omx-rpi --disable-libopencv --disable-libopus --disable-libvpx --disable-libass --disable-libbluray --disable-libmfx --disable-librtmp --disable-libmp3lame --disable-libmodplug --disable-libspeex --disable-libtheora --disable-iconv --enable-libfreetype --enable-fontconfig --disable-libopenjpeg --disable-libx264 --disable-libx265 --disable-libdav1d --disable-x86asm --disable-mmx --disable-sse --disable-sse2 --disable-sse3 --disable-ssse3 --disable-sse4 --disable-sse42 --disable-avx --disable-avx2 --disable-armv6 --disable-armv6t2 --enable-vfp --enable-neon --disable-altivec --extra-libs=-latomic --enable-pic --cpu=cortex-a76
+  libavutil      56. 70.100 / 56. 70.100
+  libavcodec     58.134.100 / 58.134.100
+  libavformat    58. 76.100 / 58. 76.100
+  libavdevice    58. 13.100 / 58. 13.100
+  libavfilter     7.110.100 /  7.110.100
+  libswscale      5.  9.100 /  5.  9.100
+  libswresample   3.  9.100 /  3.  9.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/mnt/user_data/applications/misc/image_npu/px/px_5915075.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp42mp41isomavc1
+    creation_time   : 2020-11-17T23:42:15.000000Z
+  Duration: 00:00:27.54, start: 0.000000, bitrate: 5913 kb/s
+  Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 1920x1080, 5658 kb/s, 29.97 fps, 29.97 tbr, 30k tbn, 60k tbc (default)
+    Metadata:
+      creation_time   : 2020-11-17T23:42:15.000000Z
+      handler_name    : L-SMASH Video Handler
+      vendor_id       : [0][0][0][0]
+      encoder         : AVC Coding
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 253 kb/s (default)
+    Metadata:
+      creation_time   : 2020-11-17T23:42:15.000000Z
+      handler_name    : L-SMASH Audio Handler
+      vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> rawvideo (native))
+Press [q] to stop, [?] for help
+[swscaler @ 0x32951de0] No accelerated colorspace conversion found from yuv420p to rgb24.
+Output #0, video4linux2,v4l2, to '/dev/video11':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp42mp41isomavc1
+    encoder         : Lavf58.76.100
+  Stream #0:0(und): Video: rawvideo (RGB[24] / 0x18424752), rgb24(pc, gbr/bt709/bt709, progressive), 1920x1080, q=2-31, 746496 kb/s, 15 fps, 15 tbn (default)
+    Metadata:
+      creation_time   : 2020-11-17T23:42:15.000000Z
+      handler_name    : L-SMASH Video Handler
+      vendor_id       : [0][0][0][0]
+      encoder         : Lavc58.134.100 rawvideo
+frame=    1 fps=0.0 q=-0.0 size=N/A time=00:00:00.06 bitrate=N/A speed=0.284x    frame=   10 fps=0.0 q=-0.0 size=N/A time=00:00:00.66 bitrate=N/A dup=0 drop=5 speed= 0.9x    [LDW] config: warn_margin=0.50m tlc<0.80+lat+0.70s (dist<1.50m, vel>0.10m/s) trigger=2 frames ref_y=864 cam_x=960 dashed_class=2
+[LDW] camera: offset +0.00m, lane width 3.50m, usual place learned (max 0.60m after 10s)
+[LDW] ego lane for cut-in: measured <=0.2s, held <=1.0s, then lead car (>=1 s) / virtual
+[32m[app] Driver Info[0m
+[32m[app] video_width x video_height : 1920 x 1080[0m
+
+ USER CONFIG
+--------------------------------
+ Channel		video11	
+--------------------------------
+ data_idx		CNN 	
+ dma_mode		INTERLEAVE
+ img_process		DS        
+ pixformat		RGB3	
+ crop_x_start		-	
+ crop_y_start		-	
+ crop_width		-	
+ crop_height		-	
+ ds_width		1920	
+ ds_height		1080	
+--------------------------------
+[Info] nc_tsfs_ff_create_buffers() called... owner(0) each buffer size(52352)....
+[Info] nc_tsfs_ff_create_buffers() called... owner(4) each buffer size(52352)....
+[Info] nc_tsfs_ff_create_buffers() called... owner(8) each buffer size(52352)....
+aiWare Runtime version:  2.5.3
+aiwModule Version: 1.3.4
+Opening device
+frame=   17 fps= 13 q=-0.0 size=N/A time=00:00:01.13 bitrate=N/A dup=0 drop=12 speed=0.875x    <nc_localize_path> misc/networks/trichimera/trichimera_640x384_a6sr_aiw4939.aiwbin to ./misc/networks/trichimera/trichimera_640x384_a6sr_aiw4939.aiwbin
+Loading binary_data : ./misc/networks/trichimera/trichimera_640x384_a6sr_aiw4939.aiwbin
+frame=   26 fps= 14 q=-0.0 size=N/A time=00:00:01.73 bitrate=N/A dup=0 drop=21 speed=0.957x    <nc_localize_path> misc/trichimera_640x384_a6sr_aiw4939.ini to ./misc/trichimera_640x384_a6sr_aiw4939.ini
+
+Init ByteTrack : fps(30), max class cnt(6) ......!
+aiw finish
+create tasks
+CNN TASK RUN!!
+++PP TASK RUN
+frame=   33 fps= 14 q=-0.0 size=N/A time=00:00:02.20 bitrate=N/A dup=0 drop=28 speed=0.946x    [nc_cutin] config: point=center min_on=1000ms dup=3000ms horizon=1000ms margin=0.10 on=100ms(>=3 hits) off=333ms lc_hold=500ms min_lane_w=200px lane_stale=max(200ms, 3 frames)
+[nc_cutin] config: lane source=measured+held+lead+virtual (lead: on=100ms, virtual: margin=0.10 on=100ms, moving-in edge=0.15 move=0.25, pulling away < 0.50, sideways >= 0.10 lane/s, track key=class+id)
+[LDW] ch0 ego lane source: none -> detected (y=864: 533-1125 px, last measured 533-1125, vp 893,624 k 2.463, lead none)
+[LDW] ch0 INVALID -> NORMAL (left 1.60m, right 0.05m, offset +0.78m, vel +0.00m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, dashed vote L0.00 R1.00)
+[STUB] nc_rec_trigger(0)
+[LDW] ch0 NORMAL -> WARN_RIGHT(weak) (left 1.58m, right 0.07m, offset +0.76m, vel -0.08m/s, tlc -1.00s < 1.54s?, latency 35ms, class L1 R2, dashed vote L0.00 R1.00)
+ULOG 997.942 c1 id1 u 0.366 w 147 by 687 bw 78 bl 0.103 br 0.630 src 0 r 2 vu +0.00?
+ULOG 997.942 c1 id2 u 1.433 w 291 by 743 bw 163 bl 1.153 br 1.713 src 0 r 0 vu +0.00?
+ULOG 997.942 c3 id1 u 1.330 w 137 by 683 bw 116 bl 0.907 br 1.753 src 0 r 2 vu +0.00?
+ULOG 998.007 c1 id1 u 0.397 w 140 by 684 bw 75 bl 0.130 br 0.663 src 0 r 2 vu +0.00?
+ULOG 998.007 c1 id2 u 1.447 w 290 by 743 bw 163 bl 1.165 br 1.728 src 0 r 0 vu +0.00?
+ULOG 998.007 c3 id1 u 1.417 w 130 by 680 bw 114 bl 0.977 br 1.858 src 0 r 2 vu +0.00?
+ULOG 998.073 c1 id1 u 0.403 w 136 by 683 bw 74 bl 0.132 br 0.674 src 0 r 2 vu +0.00?
+ULOG 998.073 c1 id2 u 1.459 w 288 by 742 bw 165 bl 1.173 br 1.745 src 0 r 0 vu +0.00?
+ULOG 998.073 c3 id1 u 1.421 w 128 by 680 bw 117 bl 0.965 br 1.876 src 0 r 2 vu +0.00?
+ULOG 998.139 c1 id1 u 0.393 w 133 by 683 bw 73 bl 0.118 br 0.667 src 0 r 2 vu +0.00?
+ULOG 998.139 c1 id2 u 1.454 w 289 by 743 bw 164 bl 1.170 br 1.738 src 0 r 0 vu +0.00?
+ULOG 998.139 c1 id3 u 0.985 w 61 by 655 bw 35 bl 0.699 br 1.271 src 0 r 2 vu +0.00?
+ULOG 998.139 c3 id1 u 1.412 w 126 by 680 bw 116 bl 0.953 br 1.872 src 0 r 2 vu +0.00?
+ULOG 998.205 c1 id1 u 0.383 w 133 by 683 bw 72 bl 0.112 br 0.654 src 0 r 2 vu +0.00?
+ULOG 998.205 c1 id2 u 1.438 w 293 by 745 bw 165 bl 1.156 br 1.719 src 0 r 0 vu +0.03
+ULOG 998.205 c1 id3 u 0.955 w 62 by 655 bw 35 bl 0.674 br 1.237 src 0 r 2 vu +0.00?
+ULOG 998.205 c3 id1 u 1.399 w 127 by 680 bw 115 bl 0.945 br 1.852 src 0 r 2 vu +0.00?
+ULOG 998.281 c1 id1 u 0.386 w 135 by 684 bw 72 bl 0.119 br 0.652 src 0 r 2 vu +0.00?
+ULOG 998.281 c1 id2 u 1.434 w 296 by 746 bw 166 bl 1.154 br 1.714 src 0 r 0 vu -0.01
+ULOG 998.281 c1 id3 u 0.977 w 65 by 656 bw 36 bl 0.697 br 1.257 src 0 r 2 vu +0.00?
+ULOG 998.281 c3 id1 u 1.374 w 129 by 681 bw 114 bl 0.935 br 1.813 src 0 r 2 vu +0.00?
+frame=   41 fps= 14 q=-0.0 size=N/A time=00:00:02.73 bitrate=N/A dup=0 drop=36 speed=0.965x    ULOG 998.347 c1 id1 u 0.401 w 139 by 686 bw 72 bl 0.144 br 0.658 src 0 r 2 vu +0.00?
+ULOG 998.347 c1 id2 u 1.434 w 297 by 747 bw 164 bl 1.157 br 1.710 src 0 r 0 vu -0.07
+ULOG 998.347 c1 id3 u 0.981 w 73 by 660 bw 37 bl 0.731 br 1.231 src 0 r 2 vu +0.00?
+ULOG 998.347 c3 id1 u 1.364 w 132 by 683 bw 115 bl 0.930 br 1.797 src 0 r 2 vu +0.00?
+ULOG 998.413 c1 id1 u 0.426 w 146 by 689 bw 71 bl 0.182 br 0.669 src 0 r 2 vu +0.00?
+ULOG 998.413 c1 id2 u 1.420 w 304 by 751 bw 165 bl 1.149 br 1.690 src 0 r 0 vu -0.11
+ULOG 998.413 c1 id3 u 0.959 w 79 by 663 bw 39 bl 0.716 br 1.203 src 0 r 2 vu +0.00?
+ULOG 998.413 c3 id1 u 1.371 w 137 by 686 bw 115 bl 0.952 br 1.790 src 0 r 2 vu +0.00?
+ULOG 998.479 c1 id1 u 0.459 w 170 by 700 bw 70 bl 0.252 br 0.666 src 0 r 2 vu +0.00?
+ULOG 998.479 c1 id2 u 1.363 w 329 by 762 bw 164 bl 1.114 br 1.612 src 0 r 0 vu -0.21
+ULOG 998.479 c1 id3 u 0.879 w 105 by 674 bw 39 bl 0.693 br 1.065 src 0 r 2 vu +0.00?
+ULOG 998.479 c3 id1 u 1.278 w 165 by 698 bw 116 bl 0.925 br 1.632 src 0 r 2 vu +0.00?
+ULOG 998.544 c1 id1 u 0.477 w 196 by 712 bw 72 bl 0.293 br 0.660 src 0 r 2 vu +0.00?
+ULOG 998.544 c1 id2 u 1.310 w 354 by 773 bw 164 bl 1.079 br 1.542 src 0 r 0 vu -0.36
+ULOG 998.544 c1 id3 u 0.829 w 135 by 688 bw 39 bl 0.684 br 0.974 src 0 r 2 vu +0.00?
+ULOG 998.544 c3 id1 u 1.187 w 187 by 708 bw 117 bl 0.873 br 1.501 src 0 r 2 vu +0.00?
+ULOG 998.610 c1 id1 u 0.533 w 225 by 718 bw 70 bl 0.378 br 0.688 src 0 r 0 vu +0.00?
+ULOG 998.610 c1 id2 u 1.273 w 385 by 781 bw 165 bl 1.058 br 1.488 src 0 r 0 vu -0.54
+ULOG 998.610 c1 id3 u 0.848 w 169 by 696 bw 39 bl 0.733 br 0.962 src 0 r 2 vu +0.00?
+ULOG 998.610 c3 id1 u 1.151 w 213 by 714 bw 116 bl 0.880 br 1.422 src 0 r 0 vu +0.00?
+[nc_cutin] ch0 cand class:3 id:1 u_now:1.15 u_fut:0.89 vu:+0.00/s(?) edge:0.00>0.00 box:948,603,116,111 fut:1028,817 lane@714:760-973
+ULOG 998.676 c1 id1 u 0.561 w 226 by 719 bw 68 bl 0.410 br 0.712 src 0 r 0 vu +0.00?
+ULOG 998.676 c1 id2 u 1.271 w 392 by 784 bw 165 bl 1.061 br 1.481 src 0 r 0 vu -0.50
+ULOG 998.676 c1 id3 u 0.860 w 170 by 696 bw 37 bl 0.750 br 0.969 src 0 r 2 vu +0.00?
+ULOG 998.676 c3 id1 u 1.158 w 218 by 715 bw 114 bl 0.897 br 1.419 src 0 r 0 vu +0.00?
+ULOG 998.742 c1 id1 u 0.527 w 203 by 719 bw 68 bl 0.359 br 0.694 src 0 r 0 vu +0.00?
+ULOG 998.742 c1 id2 u 1.290 w 373 by 785 bw 164 bl 1.070 br 1.510 src 0 r 0 vu -0.44
+ULOG 998.742 c1 id3 u 0.877 w 137 by 693 bw 34 bl 0.752 br 1.002 src 0 r 2 vu +0.00?
+ULOG 998.742 c3 id1 u 1.190 w 196 by 716 bw 116 bl 0.895 br 1.485 src 0 r 2 vu +0.00?
+ULOG 998.808 c1 id1 u 0.518 w 195 by 718 bw 68 bl 0.344 br 0.692 src 0 r 2 vu +0.00?
+ULOG 998.808 c1 id2 u 1.303 w 364 by 784 bw 163 bl 1.079 br 1.527 src 0 r 0 vu -0.29
+ULOG 998.808 c1 id3 u 0.873 w 130 by 693 bw 36 bl 0.734 br 1.013 src 0 r 2 vu +0.00?
+ULOG 998.808 c3 id1 u 1.228 w 183 by 714 bw 113 bl 0.919 br 1.538 src 0 r 2 vu +0.00?
+frame=   49 fps= 15 q=-0.0 size=N/A time=00:00:03.26 bitrate=N/A dup=0 drop=44 speed=0.979x    ULOG 998.873 c1 id1 u 0.518 w 190 by 718 bw 67 bl 0.342 br 0.694 src 0 r 2 vu +0.00?
+ULOG 998.873 c1 id2 u 1.311 w 359 by 784 bw 163 bl 1.083 br 1.539 src 0 r 0 vu -0.08
+ULOG 998.873 c1 id3 u 0.858 w 129 by 695 bw 39 bl 0.706 br 1.010 src 0 r 2 vu +0.00?
+ULOG 998.873 c3 id1 u 1.240 w 178 by 713 bw 113 bl 0.921 br 1.558 src 0 r 2 vu +0.00?
+[nc_cutin] ch0 stats/17fr eval:57 hold:0 no_lane:37 far:37 lost:0 stale:0 inside:3 not_enter:16 cand:1 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.4
+ULOG 998.939 c1 id1 u 0.514 w 190 by 720 bw 66 bl 0.340 br 0.688 src 0 r 2 vu +0.00?
+ULOG 998.939 c1 id2 u 1.311 w 356 by 784 bw 162 bl 1.083 br 1.539 src 0 r 0 vu +0.06
+ULOG 998.939 c1 id3 u 0.852 w 130 by 697 bw 37 bl 0.709 br 0.995 src 0 r 2 vu +0.00?
+ULOG 998.939 c3 id1 u 1.234 w 179 by 715 bw 114 bl 0.914 br 1.554 src 0 r 2 vu +0.00?
+ULOG 999.014 c1 id1 u 0.509 w 192 by 722 bw 66 bl 0.337 br 0.682 src 0 r 2 vu +0.00?
+ULOG 999.014 c1 id2 u 1.307 w 357 by 786 bw 163 bl 1.078 br 1.536 src 0 r 0 vu +0.11
+ULOG 999.014 c1 id3 u 0.835 w 135 by 700 bw 36 bl 0.701 br 0.970 src 0 r 2 vu +0.00?
+ULOG 999.093 c1 id1 u 0.566 w 228 by 725 bw 66 bl 0.421 br 0.711 src 0 r 0 vu +0.00?
+ULOG 999.093 c1 id2 u 1.269 w 392 by 789 bw 165 bl 1.059 br 1.479 src 0 r 0 vu -0.04
+ULOG 999.093 c1 id3 u 0.844 w 173 by 703 bw 36 bl 0.740 br 0.948 src 0 r 2 vu +0.00?
+ULOG 999.093 c3 id1 u 1.162 w 218 by 721 bw 115 bl 0.898 br 1.425 src 0 r 0 vu +0.00?
+ULOG 999.141 c1 id1 u 0.552 w 233 by 727 bw 65 bl 0.412 br 0.692 src 0 r 0 vu +0.08
+ULOG 999.141 c1 id2 u 1.252 w 398 by 792 bw 166 bl 1.044 br 1.460 src 0 r 0 vu -0.10
+ULOG 999.141 c1 id3 u 0.839 w 173 by 703 bw 34 bl 0.741 br 0.937 src 0 r 2 vu +0.00?
+ULOG 999.141 c3 id1 u 1.127 w 231 by 726 bw 116 bl 0.875 br 1.379 src 0 r 0 vu +0.00?
+[nc_cutin] ch0 cand class:3 id:1 u_now:1.13 u_fut:0.88 vu:+0.00/s(?) edge:0.00>0.00 box:947,614,116,112 fut:982,774 lane@726:745-976
+ULOG 999.208 c1 id1 u 0.450 w 206 by 731 bw 66 bl 0.289 br 0.612 src 0 r 0 vu +0.00?
+ULOG 999.208 c1 id2 u 1.255 w 369 by 794 bw 166 bl 1.030 br 1.479 src 0 r 0 vu -0.16
+ULOG 999.208 c1 id3 u 0.752 w 143 by 707 bw 39 bl 0.617 br 0.887 src 0 r 2 vu +0.00?
+ULOG 999.208 c3 id1 u 1.141 w 197 by 727 bw 115 bl 0.847 br 1.435 src 0 r 2 vu +0.00?
+ULOG 999.274 c1 id1 u 0.513 w 243 by 732 bw 66 bl 0.377 br 0.649 src 0 r 0 vu +0.00?
+ULOG 999.274 c1 id2 u 1.219 w 401 by 794 bw 165 bl 1.014 br 1.425 src 0 r 0 vu -0.27
+ULOG 999.274 c1 id3 u 0.782 w 179 by 707 bw 37 bl 0.679 br 0.886 src 0 r 2 vu +0.00?
+ULOG 999.274 c3 id1 u 1.102 w 233 by 728 bw 115 bl 0.855 br 1.349 src 0 r 0 vu +0.00?
+[nc_cutin] ch0 cand class:3 id:1 u_now:1.10 u_fut:0.81 vu:+0.00/s(?) edge:0.00>0.00 box:939,618,115,110 fut:946,761 lane@728:740-973
+ULOG 999.348 c1 id1 u 0.515 w 246 by 733 bw 65 bl 0.383 br 0.647 src 0 r 0 vu -0.21
+ULOG 999.348 c1 id2 u 1.213 w 404 by 795 bw 163 bl 1.011 br 1.415 src 0 r 0 vu -0.27
+ULOG 999.348 c1 id3 u 0.776 w 184 by 709 bw 37 bl 0.674 br 0.877 src 0 r 2 vu +0.00?
+ULOG 999.348 c3 id1 u 1.072 w 243 by 732 bw 118 bl 0.828 br 1.316 src 0 r 0 vu -0.31
+[nc_cutin] ch0 cand class:3 id:1 u_now:1.07 u_fut:0.77 vu:-0.31/s edge:0.00>0.00 box:932,619,118,113 fut:932,763 lane@732:731-974
+frame=   56 fps= 15 q=-0.0 size=N/A time=00:00:03.73 bitrate=N/A dup=0 drop=51 speed=0.968x    ULOG 999.414 c1 id1 u 0.529 w 244 by 733 bw 64 bl 0.398 br 0.660 src 0 r 0 vu +0.00?
+ULOG 999.414 c1 id2 u 1.214 w 406 by 796 bw 163 bl 1.013 br 1.416 src 0 r 0 vu +0.00?
+ULOG 999.414 c1 id3 u 0.791 w 187 by 710 bw 37 bl 0.692 br 0.891 src 0 r 2 vu +0.00?
+ULOG 999.414 c3 id1 u 1.055 w 255 by 737 bw 124 bl 0.812 br 1.298 src 0 r 0 vu -0.31
+[nc_cutin] ch0 cand class:3 id:1 u_now:1.05 u_fut:0.80 vu:-0.31/s edge:0.00>0.00 box:927,617,124,119 fut:940,766 lane@737:721-975
+[nc_cutin] ch0 cut-in ON  class:3 id:1 (candidate 140 ms, 3 frames, lane measured)
+[STUB] nc_rec_trigger(1)
+ULOG 999.479 c1 id1 u 0.539 w 247 by 734 bw 64 bl 0.408 br 0.669 src 0 r 0 vu +0.00?
+ULOG 999.479 c1 id2 u 1.214 w 409 by 797 bw 162 bl 1.015 br 1.413 src 0 r 0 vu +0.00?
+ULOG 999.479 c1 id3 u 0.805 w 189 by 711 bw 35 bl 0.712 br 0.898 src 0 r 2 vu +0.00?
+ULOG 999.479 c3 id1 u 1.071 w 252 by 736 bw 121 bl 0.831 br 1.311 src 0 r 0 vu -0.25
+[nc_cutin] ch0 cand class:3 id:1 u_now:1.07 u_fut:0.85 vu:-0.25/s edge:0.00>0.00 box:928,619,121,117 fut:953,764 lane@736:718-970
+ULOG 999.545 c1 id1 u 0.544 w 249 by 735 bw 63 bl 0.417 br 0.672 src 0 r 0 vu +0.00?
+ULOG 999.545 c1 id2 u 1.205 w 413 by 799 bw 164 bl 1.007 br 1.403 src 0 r 0 vu +0.00?
+ULOG 999.545 c1 id3 u 0.806 w 191 by 712 bw 34 bl 0.717 br 0.895 src 0 r 2 vu +0.00?
+ULOG 999.545 c3 id1 u 1.092 w 247 by 734 bw 118 bl 0.854 br 1.331 src 0 r 0 vu -0.03
+ULOG 999.611 c1 id1 u 0.402 w 192 by 735 bw 62 bl 0.240 br 0.564 src 0 r 2 vu +0.00?
+ULOG 999.611 c1 id2 u 1.234 w 361 by 799 bw 164 bl 1.006 br 1.461 src 0 r 0 vu +0.00?
+ULOG 999.611 c1 id3 u 0.710 w 137 by 714 bw 35 bl 0.585 br 0.836 src 0 r 2 vu +0.00?
+ULOG 999.611 c3 id1 u 1.128 w 190 by 734 bw 116 bl 0.823 br 1.433 src 0 r 2 vu +0.00?
+ULOG 999.676 c1 id1 u 0.363 w 187 by 735 bw 62 bl 0.197 br 0.530 src 0 r 2 vu +0.00?
+ULOG 999.676 c1 id2 u 1.233 w 353 by 799 bw 167 bl 0.998 br 1.469 src 0 r 0 vu +0.09
+ULOG 999.676 c1 id3 u 0.676 w 133 by 714 bw 38 bl 0.534 br 0.818 src 0 r 2 vu +0.00?
+ULOG 999.676 c3 id1 u 1.111 w 191 by 736 bw 119 bl 0.798 br 1.424 src 0 r 2 vu +0.00?
+ULOG 999.742 c1 id1 u 0.335 w 186 by 737 bw 62 bl 0.168 br 0.502 src 0 r 2 vu +0.00?
+ULOG 999.742 c1 id2 u 1.217 w 354 by 801 bw 169 bl 0.980 br 1.455 src 0 r 0 vu +0.04
+ULOG 999.742 c1 id3 u 0.655 w 126 by 714 bw 35 bl 0.514 br 0.796 src 0 r 2 vu +0.00?
+ULOG 999.742 c3 id1 u 1.098 w 187 by 737 bw 119 bl 0.780 br 1.417 src 0 r 2 vu +0.00?
+ULOG 999.808 c1 id1 u 0.485 w 245 by 739 bw 63 bl 0.357 br 0.614 src 0 r 0 vu -0.13
+ULOG 999.808 c1 id2 u 1.180 w 408 by 803 bw 167 bl 0.976 br 1.385 src 0 r 0 vu -0.04
+ULOG 999.808 c1 id3 u 0.746 w 188 by 717 bw 36 bl 0.650 br 0.843 src 0 r 2 vu +0.00?
+ULOG 999.808 c3 id1 u 1.063 w 245 by 739 bw 120 bl 0.818 br 1.308 src 0 r 0 vu +0.00
+[nc_cutin] ch0 not sideways class:3 id:1 u_now:1.06 u_fut:0.72 vu:+0.00/s
+frame=   64 fps= 15 q=-0.0 size=N/A time=00:00:04.26 bitrate=N/A dup=0 drop=59 speed=0.979x    ULOG 999.874 c1 id1 u 0.497 w 252 by 742 bw 63 bl 0.372 br 0.623 src 0 r 0 vu -0.14
+ULOG 999.874 c1 id2 u 1.186 w 410 by 804 bw 166 bl 0.984 br 1.389 src 0 r 0 vu -0.08
+ULOG 999.874 c1 id3 u 0.748 w 190 by 718 bw 37 bl 0.652 br 0.845 src 0 r 2 vu +0.00?
+[nc_cutin] ch0 stats/15fr eval:58 hold:0 no_lane:25 far:25 lost:0 stale:0 inside:10 not_enter:17 cand:6 on:1 held:0 lead:0 virtual:0 movein:0 away:0 side:1 fps:15.1
+ULOG 999.940 c1 id1 u 0.333 w 183 by 742 bw 63 bl 0.161 br 0.506 src 0 r 2 vu +0.00?
+ULOG 999.940 c1 id2 u 1.237 w 344 by 804 bw 165 bl 0.997 br 1.477 src 0 r 0 vu -0.03
+ULOG 999.940 c1 id3 u 0.621 w 116 by 717 bw 36 bl 0.464 br 0.777 src 0 r 2 vu +0.00?
+ULOG 999.940 c3 id1 u 1.124 w 179 by 741 bw 121 bl 0.786 br 1.462 src 0 r 2 vu +0.00?
+ULOG 1000.015 c1 id1 u 0.306 w 171 by 741 bw 61 bl 0.126 br 0.485 src 0 r 2 vu +0.00?
+ULOG 1000.015 c1 id2 u 1.256 w 335 by 803 bw 165 bl 1.010 br 1.501 src 0 r 0 vu +0.08
+ULOG 1000.015 c1 id3 u 0.615 w 108 by 717 bw 38 bl 0.440 br 0.790 src 0 r 2 vu +0.00?
+ULOG 1000.015 c3 id1 u 1.157 w 171 by 741 bw 121 bl 0.803 br 1.510 src 0 r 2 vu +0.00?
+ULOG 1000.081 c1 id1 u 0.279 w 159 by 739 bw 62 bl 0.085 br 0.473 src 0 r 2 vu +0.00?
+ULOG 1000.081 c1 id2 u 1.276 w 326 by 802 bw 167 bl 1.020 br 1.531 src 0 r 0 vu +0.24
+ULOG 1000.081 c1 id3 u 0.636 w 101 by 717 bw 38 bl 0.446 br 0.827 src 0 r 2 vu +0.00?
+ULOG 1000.081 c3 id1 u 1.178 w 166 by 742 bw 123 bl 0.806 br 1.549 src 0 r 2 vu +0.00?
+ULOG 1000.146 c1 id1 u 0.503 w 219 by 738 bw 61 bl 0.363 br 0.643 src 0 r 0 vu +0.04
+ULOG 1000.146 c1 id2 u 1.246 w 385 by 802 bw 169 bl 1.026 br 1.466 src 0 r 0 vu +0.26
+ULOG 1000.146 c1 id3 u 0.805 w 161 by 715 bw 39 bl 0.683 br 0.926 src 0 r 2 vu +0.00?
+ULOG 1000.146 c3 id1 u 1.164 w 226 by 740 bw 126 bl 0.886 br 1.441 src 0 r 0 vu +0.00?
+ULOG 1000.212 c1 id1 u 0.262 w 139 by 736 bw 62 bl 0.041 br 0.484 src 0 r 2 vu +0.00?
+ULOG 1000.212 c1 id2 u 1.330 w 308 by 800 bw 168 bl 1.057 br 1.603 src 0 r 0 vu +0.32
+ULOG 1000.212 c1 id3 u 0.711 w 78 by 713 bw 38 bl 0.464 br 0.957 src 0 r 2 vu +0.00?
+ULOG 1000.212 c3 id1 u 1.313 w 143 by 738 bw 126 bl 0.874 br 1.752 src 0 r 2 vu +0.00?
+ULOG 1000.277 c1 id1 u 0.298 w 134 by 734 bw 63 bl 0.062 br 0.533 src 0 r 2 vu +0.00?
+ULOG 1000.277 c1 id2 u 1.361 w 301 by 799 bw 170 bl 1.080 br 1.643 src 0 r 0 vu +0.35
+ULOG 1000.277 c1 id3 u 0.781 w 74 by 711 bw 43 bl 0.492 br 1.069 src 0 r 2 vu +0.00?
+ULOG 1000.277 c3 id1 u 1.417 w 134 by 735 bw 125 bl 0.951 br 1.883 src 0 r 2 vu +0.00?
+ULOG 1000.343 c1 id1 u 0.575 w 187 by 731 bw 60 bl 0.416 br 0.735 src 0 r 2 vu +0.00?
+ULOG 1000.343 c1 id2 u 1.338 w 359 by 797 bw 168 bl 1.105 br 1.572 src 0 r 0 vu +0.33
+ULOG 1000.343 c1 id3 u 0.948 w 140 by 713 bw 43 bl 0.794 br 1.102 src 0 r 2 vu +0.00?
+ULOG 1000.343 c3 id1 u 1.350 w 194 by 733 bw 125 bl 1.026 br 1.673 src 0 r 2 vu +0.00?
+frame=   71 fps= 15 q=-0.0 size=N/A time=00:00:04.73 bitrate=N/A dup=0 drop=66 speed=0.974x    ULOG 1000.408 c1 id1 u 0.290 w 125 by 729 bw 60 bl 0.049 br 0.531 src 0 r 2 vu +0.00?
+ULOG 1000.408 c1 id2 u 1.399 w 294 by 797 bw 165 bl 1.118 br 1.681 src 0 r 0 vu +0.37
+ULOG 1000.408 c1 id3 u 0.789 w 81 by 711 bw 39 bl 0.544 br 1.033 src 0 r 2 vu +0.00?
+ULOG 1000.408 c3 id1 u 1.430 w 135 by 733 bw 127 bl 0.962 br 1.897 src 0 r 2 vu +0.00?
+ULOG 1000.473 c1 id1 u 0.300 w 122 by 730 bw 62 bl 0.045 br 0.554 src 0 r 2 vu +0.00?
+ULOG 1000.473 c1 id2 u 1.416 w 290 by 797 bw 169 bl 1.125 br 1.708 src 0 r 0 vu +0.40
+ULOG 1000.473 c1 id3 u 0.881 w 73 by 710 bw 37 bl 0.628 br 1.134 src 0 r 2 vu +0.00?
+ULOG 1000.473 c3 id1 u 1.482 w 131 by 733 bw 128 bl 0.994 br 1.970 src 0 r 2 vu +0.00?
+[nc_cutin] ch0 cut-in OFF class:3 id:1
+ULOG 1000.549 c1 id1 u 0.306 w 115 by 729 bw 62 bl 0.036 br 0.576 src 0 r 2 vu +0.00?
+ULOG 1000.549 c1 id2 u 1.458 w 279 by 794 bw 168 bl 1.158 br 1.759 src 0 r 0 vu +0.37
+ULOG 1000.549 c1 id3 u 0.986 w 64 by 708 bw 38 bl 0.690 br 1.282 src 0 r 2 vu +0.00?
+ULOG 1000.549 c3 id1 u 1.584 w 123 by 732 bw 129 bl 1.062 br 2.106 src 0 r 2 vu +0.00?
+ULOG 1000.614 c1 id1 u 0.288 w 103 by 726 bw 61 bl -0.009 br 0.585 src 0 r 2 vu +0.00?
+ULOG 1000.614 c1 id2 u 1.494 w 269 by 792 bw 165 bl 1.187 br 1.802 src 0 r 0 vu +0.44
+ULOG 1000.614 c3 id1 u 1.688 w 114 by 730 bw 130 bl 1.121 br 2.255 src 0 r 2 vu +0.00?
+ULOG 1000.679 c1 id1 u 0.517 w 137 by 720 bw 60 bl 0.297 br 0.736 src 0 r 2 vu +0.00?
+ULOG 1000.679 c1 id2 u 1.446 w 310 by 788 bw 166 bl 1.178 br 1.714 src 0 r 0 vu +0.37
+ULOG 1000.679 c1 id3 u 1.106 w 88 by 701 bw 39 bl 0.883 br 1.329 src 0 r 2 vu +0.00?
+ULOG 1000.679 c3 id1 u 1.536 w 155 by 727 bw 131 bl 1.112 br 1.960 src 0 r 2 vu +0.00?
+ULOG 1000.745 c1 id1 u 0.234 w 75 by 715 bw 62 bl -0.177 br 0.644 src 0 r 2 vu +0.00?
+ULOG 1000.745 c1 id2 u 1.624 w 236 by 779 bw 166 bl 1.271 br 1.977 src 0 r 0 vu +0.53
+ULOG 1000.745 c3 id1 u 2.059 w 86 by 720 bw 132 bl 1.293 br 2.825 src 0 r 2 vu +0.00?
+ULOG 1000.812 c1 id2 u 1.725 w 216 by 772 bw 168 bl 1.335 br 2.114 src 0 r 0 vu +0.85
+ULOG 1000.812 c3 id1 u 2.548 w 67 by 714 bw 134 bl 1.549 br 3.547 src 0 r 2 vu +0.00?
+frame=   79 fps= 15 q=-0.0 size=N/A time=00:00:05.26 bitrate=N/A dup=0 drop=74 speed=0.982x    ULOG 1000.879 c1 id2 u 1.774 w 205 by 768 bw 170 bl 1.361 br 2.188 src 0 r 0 vu +0.00?
+[nc_cutin] ch0 stats/15fr eval:60 hold:0 no_lane:47 far:44 lost:3 stale:0 inside:0 not_enter:13 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.0
+ULOG 1000.946 c1 id1 u 0.451 w 73 by 701 bw 63 bl 0.017 br 0.886 src 0 r 2 vu +0.00?
+ULOG 1000.946 c1 id2 u 1.663 w 240 by 766 bw 170 bl 1.310 br 2.016 src 0 r 0 vu +0.00?
+ULOG 1000.946 c3 id1 u 2.343 w 85 by 706 bw 132 bl 1.571 br 3.114 src 0 r 2 vu +0.00?
+ULOG 1001.012 c1 id2 u 1.784 w 203 by 767 bw 170 bl 1.363 br 2.204 src 0 r 0 vu +0.00?
+ULOG 1001.078 c1 id2 u 1.772 w 203 by 766 bw 169 bl 1.357 br 2.188 src 0 r 0 vu +0.00?
+ULOG 1001.144 c1 id2 u 1.736 w 207 by 766 bw 168 bl 1.328 br 2.143 src 0 r 0 vu +0.05
+ULOG 1001.209 c1 id2 u 1.695 w 212 by 766 bw 169 bl 1.294 br 2.095 src 0 r 0 vu -0.08
+[LDW] ch0 WARN_RIGHT -> NORMAL (left 1.95m, right -0.30m, offset +1.12m, vel -0.10m/s, tlc 18.58s < 1.54s?, latency 35ms, class L1 R2, dashed vote L0.00 R1.00)
+ULOG 1001.283 c1 id2 u 1.650 w 218 by 766 bw 171 bl 1.258 br 2.043 src 0 r 0 vu -0.16
+ULOG 1001.349 c1 id2 u 1.636 w 219 by 764 bw 172 bl 1.245 br 2.028 src 0 r 0 vu -0.48
+frame=   86 fps= 15 q=-0.0 size=N/A time=00:00:05.73 bitrate=N/A dup=0 drop=81 speed=0.977x    ULOG 1001.415 c1 id2 u 1.662 w 213 by 759 bw 170 bl 1.264 br 2.061 src 0 r 0 vu -0.38
+ULOG 1001.480 c1 id2 u 1.645 w 214 by 757 bw 171 bl 1.246 br 2.045 src 0 r 0 vu -0.24
+ULOG 1001.545 c1 id2 u 1.588 w 221 by 757 bw 170 bl 1.203 br 1.972 src 0 r 0 vu -0.23
+ULOG 1001.545 c3 id1 u 2.899 w 63 by 698 bw 142 bl 1.767 br 4.030 src 0 r 2 vu +0.00?
+ULOG 1001.610 c1 id2 u 1.522 w 230 by 758 bw 171 bl 1.149 br 1.894 src 0 r 0 vu -0.35
+ULOG 1001.610 c3 id1 u 2.680 w 71 by 698 bw 145 bl 1.649 br 3.711 src 0 r 2 vu +0.00?
+ULOG 1001.675 c1 id2 u 1.508 w 229 by 754 bw 170 bl 1.136 br 1.879 src 0 r 0 vu -0.40
+ULOG 1001.675 c3 id1 u 2.718 w 71 by 695 bw 147 bl 1.678 br 3.759 src 0 r 2 vu +0.00?
+ULOG 1001.750 c1 id2 u 1.511 w 223 by 750 bw 169 bl 1.132 br 1.891 src 0 r 0 vu -0.53
+ULOG 1001.750 c3 id1 u 3.127 w 60 by 689 bw 146 bl 1.914 br 4.341 src 0 r 2 vu +0.00?
+ULOG 1001.815 c1 id2 u 1.484 w 223 by 747 bw 168 bl 1.108 br 1.860 src 0 r 0 vu -0.44
+ULOG 1001.815 c3 id1 u 3.076 w 62 by 686 bw 148 bl 1.874 br 4.278 src 0 r 2 vu +0.00?
+frame=   94 fps= 15 q=-0.0 size=N/A time=00:00:06.26 bitrate=N/A dup=0 drop=89 speed=0.984x    ULOG 1001.881 c1 id2 u 1.440 w 229 by 746 bw 170 bl 1.068 br 1.811 src 0 r 0 vu -0.36
+ULOG 1001.881 c3 id1 u 3.167 w 61 by 683 bw 149 bl 1.935 br 4.400 src 0 r 2 vu +0.00?
+[nc_cutin] ch0 stats/15fr eval:60 hold:0 no_lane:60 far:46 lost:14 stale:0 inside:0 not_enter:0 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.0
+ULOG 1001.946 c1 id2 u 1.429 w 229 by 743 bw 168 bl 1.062 br 1.795 src 0 r 0 vu -0.29
+ULOG 1001.946 c3 id1 u 2.948 w 66 by 682 bw 151 bl 1.794 br 4.102 src 0 r 2 vu +0.00?
+ULOG 1002.011 c1 id2 u 1.414 w 228 by 741 bw 167 bl 1.049 br 1.780 src 0 r 0 vu -0.32
+ULOG 1002.076 c3 id1 u 1.599 w 177 by 718 bw 194 bl 1.051 br 2.147 src 0 r 2 vu +0.00?
+ULOG 1002.151 c3 id1 u 1.361 w 244 by 741 bw 208 bl 0.935 br 1.786 src 0 r 0 vu +0.00?
+ULOG 1002.216 c3 id1 u 1.358 w 249 by 743 bw 212 bl 0.933 br 1.783 src 0 r 0 vu +0.00?
+ULOG 1002.280 c1 id2 u 1.493 w 200 by 723 bw 245 bl 0.881 br 2.106 src 0 r 2 vu +0.00?
+ULOG 1002.346 c3 id1 u 1.329 w 243 by 737 bw 211 bl 0.894 br 1.764 src 0 r 0 vu +0.00?
+frame=  102 fps= 15 q=-0.0 size=N/A time=00:00:06.80 bitrate=N/A dup=0 drop=97 speed=0.989x    ULOG 1002.411 c1 id2 u 1.287 w 245 by 737 bw 186 bl 0.908 br 1.666 src 0 r 0 vu +0.00?
+[nc_cutin] ch0 cand class:1 id:2 u_now:1.29 u_fut:0.81 vu:+0.00/s(?) edge:0.00>0.00 box:945,596,186,140 fut:995,869 lane@737:723-968
+ULOG 1002.411 c3 id1 u 2.762 w 81 by 676 bw 161 bl 1.774 br 3.750 src 0 r 2 vu +0.00?
+ULOG 1002.477 c1 id2 u 1.241 w 255 by 739 bw 162 bl 0.922 br 1.559 src 0 r 0 vu +0.00?
+[nc_cutin] ch0 cand class:1 id:2 u_now:1.24 u_fut:0.81 vu:+0.00/s(?) edge:0.00>0.00 box:955,618,162,121 fut:995,860 lane@739:719-974
+ULOG 1002.552 c1 id2 u 1.196 w 263 by 740 bw 155 bl 0.901 br 1.491 src 0 r 0 vu +0.00?
+[nc_cutin] ch0 cand class:1 id:2 u_now:1.20 u_fut:0.83 vu:+0.00/s(?) edge:0.00>0.00 box:954,625,155,116 fut:987,821 lane@740:718-980
+[nc_cutin] ch0 cut-in ON  class:1 id:2 (candidate 141 ms, 3 frames, lane measured)
+[STUB] nc_rec_trigger(1)
+ULOG 1002.610 c1 id1 u 0.745 w 72 by 667 bw 60 bl 0.326 br 1.165 src 0 r 2 vu +0.00?
+ULOG 1002.610 c1 id2 u 1.171 w 262 by 738 bw 154 bl 0.877 br 1.466 src 0 r 0 vu +0.00?
+[nc_cutin] ch0 cand class:1 id:2 u_now:1.17 u_fut:0.88 vu:+0.00/s(?) edge:0.00>0.00 box:951,624,154,115 fut:977,772 lane@738:721-983
+ULOG 1002.610 c3 id1 u 2.525 w 102 by 678 bw 155 bl 1.760 br 3.290 src 0 r 2 vu +0.00?
+ULOG 1002.683 c1 id1 u 0.754 w 85 by 671 bw 60 bl 0.403 br 1.105 src 0 r 2 vu +0.00?
+ULOG 1002.683 c1 id2 u 1.128 w 271 by 740 bw 155 bl 0.843 br 1.413 src 0 r 0 vu -0.57
+[nc_cutin] ch0 cand class:1 id:2 u_now:1.13 u_fut:0.90 vu:-0.57/s edge:0.00>0.00 box:948,625,155,115 fut:978,759 lane@740:719-991
+ULOG 1002.683 c3 id1 u 2.077 w 135 by 689 bw 160 bl 1.486 br 2.667 src 0 r 2 vu +0.00?
+ULOG 1002.757 c1 id1 u 0.768 w 98 by 674 bw 60 bl 0.458 br 1.077 src 0 r 2 vu +0.00?
+ULOG 1002.757 c1 id2 u 1.111 w 272 by 740 bw 154 bl 0.827 br 1.395 src 0 r 0 vu -0.52
+ULOG 1002.757 c3 id1 u 1.975 w 152 by 695 bw 163 bl 1.439 br 2.511 src 0 r 2 vu +0.00?
+ULOG 1002.829 c1 id2 u 1.097 w 273 by 739 bw 153 bl 0.816 br 1.378 src 0 r 0 vu -0.42
+ULOG 1002.829 c3 id1 u 1.963 w 152 by 694 bw 166 bl 1.419 br 2.508 src 0 r 2 vu +0.00?
+ULOG 1002.899 c1 id2 u 1.078 w 275 by 739 bw 153 bl 0.800 br 1.357 src 0 r 0 vu -0.34
+ULOG 1002.899 c1 id1 u 0.765 w 101 by 674 bw 60 bl 0.466 br 1.063 src 0 r 2 vu +0.00?
+[nc_cutin] ch0 stats/15fr eval:46 hold:0 no_lane:36 far:24 lost:12 stale:0 inside:0 not_enter:5 cand:5 on:1 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.4
+frame=  109 fps= 15 q=-0.0 size=N/A time=00:00:07.26 bitrate=N/A dup=0 drop=104 speed=0.984x    ULOG 1002.966 c1 id2 u 1.058 w 278 by 740 bw 154 bl 0.781 br 1.334 src 0 r 0 vu -0.29
+ULOG 1002.966 c1 id1 u 0.767 w 106 by 675 bw 60 bl 0.482 br 1.052 src 0 r 2 vu +0.00?
+ULOG 1003.025 c1 id2 u 1.030 w 281 by 741 bw 157 bl 0.751 br 1.309 src 0 r 0 vu -0.28
+ULOG 1003.025 c1 id1 u 0.753 w 108 by 675 bw 60 bl 0.474 br 1.032 src 0 r 2 vu +0.00?
+ULOG 1003.096 c1 id2 u 1.005 w 277 by 739 bw 155 bl 0.725 br 1.285 src 0 r 0 vu -0.32
+ULOG 1003.096 c1 id1 u 0.731 w 107 by 674 bw 59 bl 0.454 br 1.009 src 0 r 2 vu +0.00?
+ULOG 1003.096 c2 id2 u 2.142 w 143 by 688 bw 159 bl 1.587 br 2.696 src 0 r 2 vu +0.00?
+ULOG 1003.147 c1 id2 u 0.980 w 276 by 738 bw 154 bl 0.700 br 1.260 src 0 r 0 vu -0.34
+ULOG 1003.147 c1 id1 u 0.684 w 104 by 673 bw 58 bl 0.404 br 0.964 src 0 r 2 vu +0.00?
+ULOG 1003.147 c2 id2 u 2.086 w 147 by 689 bw 158 bl 1.547 br 2.625 src 0 r 2 vu +0.00?
+ULOG 1003.219 c1 id2 u 0.947 w 276 by 738 bw 152 bl 0.671 br 1.222 src 0 r 0 vu -0.39
+ULOG 1003.219 c1 id1 u 0.669 w 107 by 674 bw 59 bl 0.395 br 0.942 src 0 r 2 vu +0.00?
+ULOG 1003.219 c2 id2 u 1.969 w 154 by 692 bw 160 bl 1.450 br 2.488 src 0 r 2 vu +0.00?
+ULOG 1003.285 c1 id2 u 0.919 w 274 by 737 bw 151 bl 0.642 br 1.195 src 0 r 0 vu -0.42
+ULOG 1003.285 c1 id1 u 0.641 w 110 by 675 bw 58 bl 0.376 br 0.907 src 0 r 2 vu +0.00?
+ULOG 1003.285 c2 id2 u 1.871 w 159 by 693 bw 161 bl 1.362 br 2.379 src 0 r 2 vu +0.00?
+ULOG 1003.352 c1 id2 u 0.894 w 275 by 737 bw 152 bl 0.618 br 1.171 src 0 r 0 vu -0.43
+ULOG 1003.352 c1 id1 u 0.620 w 105 by 673 bw 57 bl 0.351 br 0.889 src 0 r 2 vu +0.00?
+ULOG 1003.352 c2 id2 u 1.824 w 161 by 694 bw 165 bl 1.312 br 2.336 src 0 r 2 vu +0.00?
+ULOG 1003.419 c1 id2 u 0.873 w 268 by 735 bw 150 bl 0.592 br 1.153 src 0 r 0 vu -0.41
+ULOG 1003.419 c1 id1 u 0.568 w 101 by 671 bw 56 bl 0.289 br 0.847 src 0 r 2 vu +0.00?
+frame=  117 fps= 15 q=-0.0 size=N/A time=00:00:07.80 bitrate=N/A dup=0 drop=112 speed=0.987x    ULOG 1003.486 c1 id2 u 0.849 w 262 by 732 bw 148 bl 0.566 br 1.132 src 0 r 0 vu -0.40
+ULOG 1003.486 c1 id1 u 0.521 w 102 by 671 bw 57 bl 0.243 br 0.800 src 0 r 2 vu +0.00?
+ULOG 1003.553 c1 id2 u 0.821 w 260 by 731 bw 148 bl 0.536 br 1.107 src 0 r 0 vu -0.37
+ULOG 1003.553 c1 id1 u 0.459 w 99 by 670 bw 56 bl 0.173 br 0.745 src 0 r 2 vu +0.00?
+ULOG 1003.553 c3 id1 u 1.704 w 177 by 700 bw 183 bl 1.188 br 2.221 src 0 r 2 vu +0.00?
+[nc_cutin] ch0 cut-in OFF class:1 id:2
+ULOG 1003.620 c1 id2 u 0.797 w 257 by 729 bw 147 bl 0.512 br 1.082 src 0 r 0 vu -0.36
+ULOG 1003.620 c1 id1 u 0.427 w 95 by 668 bw 57 bl 0.129 br 0.726 src 0 r 2 vu +0.00?
+ULOG 1003.620 c3 id1 u 1.758 w 169 by 696 bw 185 bl 1.211 br 2.306 src 0 r 2 vu +0.00?
+ULOG 1003.686 c1 id2 u 0.781 w 265 by 729 bw 147 bl 0.504 br 1.058 src 0 r 0 vu -0.35
+ULOG 1003.686 c1 id1 u 0.435 w 107 by 667 bw 52 bl 0.192 br 0.678 src 0 r 2 vu +0.00?
+ULOG 1003.686 c3 id1 u 1.737 w 177 by 694 bw 186 bl 1.212 br 2.262 src 0 r 2 vu +0.00?
+ULOG 1003.752 c1 id2 u 0.771 w 256 by 725 bw 145 bl 0.488 br 1.054 src 0 r 0 vu -0.32
+ULOG 1003.752 c1 id1 u 0.431 w 101 by 664 bw 47 bl 0.200 br 0.662 src 0 r 2 vu +0.00?
+ULOG 1003.752 c2 id2 u 1.771 w 163 by 689 bw 174 bl 1.239 br 2.303 src 0 r 2 vu +0.00?
+ULOG 1003.818 c1 id2 u 0.782 w 242 by 722 bw 145 bl 0.482 br 1.081 src 0 r 0 vu -0.25
+ULOG 1003.818 c1 id1 u 0.475 w 85 by 661 bw 49 bl 0.187 br 0.764 src 0 r 2 vu +0.00?
+ULOG 1003.818 c2 id2 u 1.967 w 145 by 684 bw 177 bl 1.356 br 2.577 src 0 r 2 vu +0.00?
+ULOG 1003.884 c1 id2 u 0.794 w 220 by 716 bw 145 bl 0.464 br 1.124 src 0 r 0 vu -0.15
+ULOG 1003.884 c2 id2 u 2.410 w 115 by 676 bw 180 bl 1.627 br 3.194 src 0 r 2 vu +0.00?
+frame=  125 fps= 15 q=-0.0 size=N/A time=00:00:08.33 bitrate=N/A dup=0 drop=120 speed=0.99x    ULOG 1003.955 c1 id2 u 0.804 w 201 by 706 bw 140 bl 0.454 br 1.154 src 0 r 0 vu +0.04
+ULOG 1003.955 c2 id2 u 2.654 w 104 by 668 bw 181 bl 1.779 br 3.529 src 0 r 2 vu +0.00?
+[nc_cutin] ch0 stats/16fr eval:42 hold:0 no_lane:35 far:34 lost:1 stale:0 inside:4 not_enter:3 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:14.9
+ULOG 1004.013 c1 id2 u 0.801 w 188 by 700 bw 142 bl 0.425 br 1.178 src 0 r 2 vu +0.00?
+ULOG 1004.013 c2 id2 u 2.916 w 91 by 663 bw 183 bl 1.905 br 3.927 src 0 r 2 vu +0.00?
+ULOG 1004.079 c1 id2 u 0.794 w 173 by 694 bw 142 bl 0.386 br 1.203 src 0 r 2 vu +0.00?
+ULOG 1004.079 c2 id2 u 3.353 w 77 by 657 bw 188 bl 2.130 br 4.576 src 0 r 2 vu +0.00?
+ULOG 1004.145 c1 id2 u 0.767 w 173 by 692 bw 142 bl 0.359 br 1.176 src 0 r 2 vu +0.00?
+ULOG 1004.145 c2 id2 u 3.588 w 70 by 653 bw 187 bl 2.254 br 4.922 src 0 r 2 vu +0.00?
+ULOG 1004.214 c1 id2 u 0.741 w 184 by 694 bw 142 bl 0.355 br 1.127 src 0 r 2 vu +0.00?
+ULOG 1004.214 c2 id2 u 3.120 w 83 by 656 bw 190 bl 1.976 br 4.265 src 0 r 2 vu +0.00?
+ULOG 1004.281 c1 id2 u 0.711 w 194 by 696 bw 141 bl 0.348 br 1.074 src 0 r 2 vu +0.00?
+ULOG 1004.281 c2 id2 u 2.800 w 95 by 659 bw 193 bl 1.782 br 3.819 src 0 r 2 vu +0.00?
+ULOG 1004.346 c1 id2 u 0.688 w 204 by 698 bw 138 bl 0.349 br 1.028 src 0 r 0 vu +0.00?
+ULOG 1004.346 c2 id2 u 2.527 w 109 by 662 bw 197 bl 1.623 br 3.431 src 0 r 2 vu +0.00?
+ULOG 1004.412 c1 id2 u 0.662 w 215 by 700 bw 135 bl 0.347 br 0.976 src 0 r 0 vu +0.00?
+ULOG 1004.412 c2 id2 u 2.383 w 118 by 663 bw 198 bl 1.545 br 3.221 src 0 r 2 vu +0.00?
+frame=  132 fps= 15 q=-0.0 size=N/A time=00:00:08.80 bitrate=N/A dup=0 drop=127 speed=0.985x    ULOG 1004.478 c1 id2 u 0.646 w 227 by 703 bw 135 bl 0.347 br 0.945 src 0 r 0 vu +0.00?
+ULOG 1004.478 c2 id2 u 2.153 w 134 by 668 bw 202 bl 1.402 br 2.903 src 0 r 2 vu +0.00?
+ULOG 1004.553 c1 id2 u 0.631 w 234 by 704 bw 133 bl 0.346 br 0.917 src 0 r 0 vu -0.27
+ULOG 1004.553 c2 id2 u 2.074 w 142 by 669 bw 202 bl 1.364 br 2.784 src 0 r 2 vu +0.00?
+ULOG 1004.618 c1 id2 u 0.622 w 239 by 704 bw 135 bl 0.339 br 0.904 src 0 r 0 vu -0.24
+ULOG 1004.618 c2 id2 u 2.024 w 148 by 670 bw 204 bl 1.336 br 2.712 src 0 r 2 vu +0.00?
+ULOG 1004.684 c1 id2 u 0.597 w 243 by 704 bw 135 bl 0.319 br 0.875 src 0 r 0 vu -0.25
+ULOG 1004.684 c2 id2 u 1.912 w 156 by 671 bw 204 bl 1.258 br 2.567 src 0 r 2 vu +0.00?
+ULOG 1004.751 c1 id2 u 0.568 w 249 by 705 bw 133 bl 0.301 br 0.834 src 0 r 0 vu -0.26
+ULOG 1004.751 c2 id2 u 1.831 w 161 by 671 bw 205 bl 1.195 br 2.468 src 0 r 2 vu +0.00?
+ULOG 1004.816 c1 id2 u 0.558 w 255 by 706 bw 132 bl 0.299 br 0.816 src 0 r 0 vu -0.28
+ULOG 1004.816 c2 id2 u 1.785 w 165 by 672 bw 206 bl 1.161 br 2.410 src 0 r 2 vu +0.00?
+ULOG 1004.882 c1 id2 u 0.550 w 259 by 706 bw 131 bl 0.297 br 0.803 src 0 r 0 vu -0.27
+ULOG 1004.882 c2 id2 u 1.734 w 174 by 674 bw 209 bl 1.137 br 2.332 src 0 r 2 vu +0.00?
+frame=  140 fps= 15 q=-0.0 size=N/A time=00:00:09.33 bitrate=N/A dup=0 drop=135 speed=0.989x    ULOG 1004.948 c1 id2 u 0.541 w 261 by 706 bw 132 bl 0.288 br 0.794 src 0 r 0 vu -0.25
+ULOG 1004.948 c2 id2 u 1.696 w 180 by 675 bw 211 bl 1.111 br 2.280 src 0 r 2 vu +0.00?
+ULOG 1005.014 c1 id2 u 0.515 w 259 by 704 bw 131 bl 0.263 br 0.767 src 0 r 0 vu -0.24
+ULOG 1005.014 c2 id2 u 1.656 w 185 by 675 bw 212 bl 1.081 br 2.231 src 0 r 2 vu +0.00?
+[nc_cutin] ch0 stats/16fr eval:32 hold:0 no_lane:21 far:21 lost:0 stale:0 inside:11 not_enter:0 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+ULOG 1005.080 c1 id2 u 0.479 w 260 by 704 bw 129 bl 0.232 br 0.726 src 0 r 0 vu -0.26
+ULOG 1005.080 c2 id2 u 1.618 w 185 by 674 bw 212 bl 1.044 br 2.192 src 0 r 2 vu +0.00?
+ULOG 1005.146 c1 id2 u 0.435 w 257 by 701 bw 125 bl 0.191 br 0.679 src 0 r 0 vu -0.32
+ULOG 1005.146 c2 id2 u 1.578 w 183 by 673 bw 212 bl 0.998 br 2.157 src 0 r 2 vu +0.00?
+ULOG 1005.212 c1 id2 u 0.388 w 253 by 699 bw 125 bl 0.141 br 0.634 src 0 r 0 vu -0.43
+ULOG 1005.212 c2 id2 u 1.506 w 187 by 674 bw 215 bl 0.932 br 2.080 src 0 r 2 vu +0.00?
+ULOG 1005.285 c1 id2 u 0.324 w 248 by 697 bw 123 bl 0.076 br 0.573 src 0 r 0 vu -0.64
+ULOG 1005.285 c2 id2 u 1.421 w 191 by 675 bw 216 bl 0.856 br 1.986 src 0 r 2 vu +0.00?
+ULOG 1005.351 c1 id2 u 0.286 w 249 by 697 bw 123 bl 0.038 br 0.533 src 0 r 0 vu -0.70
+ULOG 1005.351 c2 id2 u 1.385 w 192 by 675 bw 217 bl 0.820 br 1.950 src 0 r 2 vu +0.00?
+ULOG 1005.418 c1 id2 u 0.265 w 250 by 697 bw 123 bl 0.019 br 0.511 src 0 r 0 vu -0.66
+ULOG 1005.418 c2 id2 u 1.350 w 192 by 675 bw 216 bl 0.788 br 1.913 src 0 r 2 vu +0.00?
+frame=  147 fps= 15 q=-0.0 size=N/A time=00:00:09.80 bitrate=N/A dup=0 drop=142 speed=0.986x    ULOG 1005.485 c1 id2 u 0.265 w 250 by 698 bw 122 bl 0.021 br 0.508 src 0 r 0 vu -0.53
+ULOG 1005.485 c2 id2 u 1.330 w 197 by 677 bw 220 bl 0.771 br 1.889 src 0 r 2 vu +0.00?
+ULOG 1005.550 c1 id2 u 0.265 w 250 by 698 bw 121 bl 0.021 br 0.508 src 0 r 0 vu -0.35
+ULOG 1005.550 c2 id2 u 1.335 w 203 by 680 bw 224 bl 0.784 br 1.885 src 0 r 0 vu +0.00?
+ULOG 1005.617 c1 id2 u 0.270 w 247 by 697 bw 123 bl 0.022 br 0.518 src 0 r 0 vu +0.00?
+ULOG 1005.617 c2 id2 u 1.339 w 209 by 683 bw 227 bl 0.797 br 1.882 src 0 r 0 vu +0.00?
+ULOG 1005.683 c1 id2 u 0.288 w 245 by 697 bw 122 bl 0.040 br 0.536 src 0 r 0 vu +0.00?
+ULOG 1005.683 c2 id2 u 1.380 w 207 by 682 bw 225 bl 0.835 br 1.925 src 0 r 0 vu +0.00?
+ULOG 1005.749 c1 id2 u 0.290 w 246 by 698 bw 121 bl 0.043 br 0.536 src 0 r 0 vu +0.00?
+ULOG 1005.749 c2 id2 u 1.364 w 213 by 685 bw 228 bl 0.829 br 1.900 src 0 r 0 vu +0.00?
+ULOG 1005.815 c1 id2 u 0.287 w 247 by 699 bw 118 bl 0.049 br 0.526 src 0 r 0 vu +0.00?
+ULOG 1005.815 c2 id2 u 1.353 w 215 by 686 bw 232 bl 0.815 br 1.891 src 0 r 0 vu +0.09
+ULOG 1005.881 c1 id2 u 0.279 w 250 by 700 bw 117 bl 0.044 br 0.514 src 0 r 0 vu +0.02
+ULOG 1005.881 c2 id2 u 1.343 w 214 by 686 bw 233 bl 0.799 br 1.888 src 0 r 0 vu +0.03
+ULOG 1005.948 c1 id2 u 0.262 w 253 by 701 bw 119 bl 0.028 br 0.497 src 0 r 0 vu -0.03
+ULOG 1005.948 c1 id7 u 0.530 w 84 by 636 bw 43 bl 0.274 br 0.785 src 0 r 2 vu +0.00?
+ULOG 1005.948 c2 id2 u 1.352 w 213 by 686 bw 233 bl 0.805 br 1.899 src 0 r 0 vu +0.02
+frame=  155 fps= 15 q=-0.0 size=N/A time=00:00:10.33 bitrate=N/A dup=0 drop=150 speed=0.989x    ULOG 1006.014 c1 id2 u 0.247 w 250 by 701 bw 117 bl 0.014 br 0.480 src 0 r 0 vu -0.07
+ULOG 1006.014 c1 id7 u 0.516 w 83 by 636 bw 44 bl 0.252 br 0.780 src 0 r 2 vu +0.00?
+ULOG 1006.014 c2 id2 u 1.351 w 212 by 686 bw 232 bl 0.804 br 1.899 src 0 r 0 vu +0.00?
+ULOG 1006.080 c1 id2 u 0.228 w 247 by 700 bw 118 bl -0.012 br 0.468 src 0 r 0 vu -0.16
+ULOG 1006.080 c1 id7 u 0.510 w 86 by 637 bw 44 bl 0.255 br 0.765 src 0 r 2 vu +0.00?
+ULOG 1006.080 c2 id2 u 1.333 w 217 by 688 bw 233 bl 0.796 br 1.871 src 0 r 0 vu +0.00?
+[nc_cutin] ch0 stats/16fr eval:35 hold:0 no_lane:12 far:12 lost:0 stale:0 inside:14 not_enter:9 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+ULOG 1006.147 c1 id2 u 0.224 w 246 by 700 bw 119 bl -0.017 br 0.465 src 0 r 0 vu -0.19
+ULOG 1006.147 c1 id7 u 0.523 w 85 by 637 bw 43 bl 0.271 br 0.775 src 0 r 2 vu +0.00?
+ULOG 1006.147 c2 id2 u 1.329 w 218 by 689 bw 235 bl 0.792 br 1.866 src 0 r 0 vu +0.00?
+ULOG 1006.213 c1 id2 u 0.222 w 244 by 699 bw 116 bl -0.016 br 0.461 src 0 r 0 vu -0.18
+ULOG 1006.213 c1 id7 u 0.530 w 83 by 637 bw 41 bl 0.281 br 0.779 src 0 r 2 vu +0.00?
+ULOG 1006.213 c2 id2 u 1.345 w 218 by 689 bw 235 bl 0.806 br 1.885 src 0 r 0 vu +0.00?
+ULOG 1006.287 c1 id2 u 0.235 w 245 by 699 bw 116 bl -0.002 br 0.471 src 0 r 0 vu -0.09
+ULOG 1006.287 c1 id7 u 0.532 w 86 by 639 bw 44 bl 0.274 br 0.791 src 0 r 2 vu +0.00?
+ULOG 1006.287 c2 id2 u 1.376 w 217 by 689 bw 237 bl 0.830 br 1.922 src 0 r 0 vu +0.09
+ULOG 1006.353 c1 id2 u 0.247 w 244 by 699 bw 114 bl 0.013 br 0.482 src 0 r 0 vu +0.01
+ULOG 1006.353 c1 id7 u 0.541 w 85 by 639 bw 45 bl 0.276 br 0.807 src 0 r 2 vu +0.00?
+ULOG 1006.353 c2 id2 u 1.374 w 222 by 691 bw 240 bl 0.832 br 1.915 src 0 r 0 vu +0.11
+ULOG 1006.418 c1 id2 u 0.256 w 241 by 698 bw 113 bl 0.021 br 0.491 src 0 r 0 vu +0.09
+ULOG 1006.418 c1 id7 u 0.576 w 84 by 638 bw 44 bl 0.312 br 0.840 src 0 r 2 vu +0.00?
+ULOG 1006.418 c2 id2 u 1.382 w 224 by 692 bw 242 bl 0.841 br 1.923 src 0 r 0 vu +0.17
+frame=  163 fps= 15 q=-0.0 size=N/A time=00:00:10.86 bitrate=N/A dup=0 drop=158 speed=0.993x    ULOG 1006.484 c1 id2 u 0.251 w 238 by 698 bw 113 bl 0.015 br 0.487 src 0 r 0 vu +0.11
+ULOG 1006.484 c1 id7 u 0.613 w 83 by 638 bw 45 bl 0.342 br 0.884 src 0 r 2 vu +0.00?
+ULOG 1006.484 c2 id2 u 1.382 w 231 by 695 bw 247 bl 0.846 br 1.918 src 0 r 0 vu +0.16
+ULOG 1006.551 c1 id2 u 0.271 w 238 by 698 bw 112 bl 0.035 br 0.507 src 0 r 0 vu +0.13
+ULOG 1006.551 c1 id7 u 0.675 w 81 by 638 bw 44 bl 0.403 br 0.946 src 0 r 2 vu +0.00?
+ULOG 1006.551 c2 id2 u 1.371 w 240 by 699 bw 251 bl 0.849 br 1.893 src 0 r 0 vu +0.07
+ULOG 1006.630 c1 id2 u 0.296 w 245 by 700 bw 113 bl 0.065 br 0.526 src 0 r 0 vu +0.16
+ULOG 1006.630 c1 id7 u 0.691 w 91 by 641 bw 45 bl 0.442 br 0.940 src 0 r 2 vu +0.00?
+ULOG 1006.630 c2 id2 u 1.397 w 238 by 697 bw 250 bl 0.872 br 1.921 src 0 r 0 vu +0.04
+ULOG 1006.688 c1 id2 u 0.316 w 255 by 704 bw 109 bl 0.102 br 0.531 src 0 r 0 vu +0.20
+ULOG 1006.688 c1 id7 u 0.728 w 99 by 644 bw 45 bl 0.503 br 0.952 src 0 r 2 vu +0.00?
+ULOG 1006.688 c2 id2 u 1.421 w 242 by 699 bw 252 bl 0.901 br 1.942 src 0 r 0 vu +0.11
+ULOG 1006.755 c1 id2 u 0.333 w 263 by 708 bw 110 bl 0.124 br 0.542 src 0 r 0 vu +0.26
+ULOG 1006.755 c1 id7 u 0.737 w 114 by 650 bw 47 bl 0.531 br 0.943 src 0 r 2 vu +0.00?
+ULOG 1006.755 c2 id2 u 1.442 w 244 by 700 bw 251 bl 0.926 br 1.957 src 0 r 0 vu +0.19
+ULOG 1006.820 c1 id2 u 0.349 w 266 by 710 bw 110 bl 0.142 br 0.555 src 0 r 0 vu +0.30
+ULOG 1006.820 c1 id7 u 0.755 w 123 by 655 bw 46 bl 0.568 br 0.943 src 0 r 2 vu +0.00?
+ULOG 1006.820 c2 id2 u 1.403 w 262 by 708 bw 258 bl 0.911 br 1.895 src 0 r 0 vu +0.15
+ULOG 1006.886 c1 id2 u 0.364 w 263 by 709 bw 108 bl 0.159 br 0.569 src 0 r 0 vu +0.28
+ULOG 1006.886 c1 id7 u 0.786 w 124 by 656 bw 46 bl 0.602 br 0.970 src 0 r 2 vu +0.00?
+ULOG 1006.886 c2 id2 u 1.456 w 259 by 708 bw 257 bl 0.959 br 1.953 src 0 r 0 vu +0.20
+ULOG 1006.953 c1 id2 u 0.375 w 255 by 708 bw 106 bl 0.168 br 0.583 src 0 r 0 vu +0.24
+ULOG 1006.953 c1 id7 u 0.823 w 122 by 657 bw 45 bl 0.639 br 1.008 src 0 r 2 vu +0.00?
+ULOG 1006.953 c2 id2 u 1.466 w 261 by 710 bw 262 bl 0.966 br 1.967 src 0 r 0 vu +0.18
+frame=  170 fps= 15 q=-0.0 size=N/A time=00:00:11.33 bitrate=N/A dup=0 drop=165 speed=0.99x    ULOG 1007.019 c1 id2 u 0.386 w 253 by 708 bw 105 bl 0.178 br 0.593 src 0 r 0 vu +0.00?
+ULOG 1007.019 c1 id7 u 0.863 w 117 by 656 bw 44 bl 0.674 br 1.053 src 0 r 2 vu +0.00?
+ULOG 1007.019 c2 id2 u 1.503 w 259 by 711 bw 265 bl 0.991 br 2.015 src 0 r 0 vu +0.23
+ULOG 1007.087 c1 id2 u 0.395 w 250 by 708 bw 105 bl 0.184 br 0.606 src 0 r 0 vu +0.00?
+ULOG 1007.087 c1 id7 u 0.885 w 115 by 657 bw 45 bl 0.687 br 1.082 src 0 r 2 vu +0.00?
+ULOG 1007.087 c2 id2 u 1.541 w 255 by 710 bw 267 bl 1.016 br 2.066 src 0 r 0 vu +0.29
+[nc_cutin] ch0 stats/15fr eval:45 hold:0 no_lane:15 far:15 lost:0 stale:0 inside:15 not_enter:15 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.0
+ULOG 1007.152 c1 id2 u 0.401 w 246 by 708 bw 108 bl 0.182 br 0.621 src 0 r 0 vu +0.00?
+ULOG 1007.152 c1 id7 u 0.929 w 111 by 656 bw 45 bl 0.727 br 1.131 src 0 r 2 vu +0.00?
+ULOG 1007.152 c2 id2 u 1.575 w 250 by 709 bw 270 bl 1.034 br 2.116 src 0 r 0 vu +0.39
+ULOG 1007.218 c1 id2 u 0.376 w 259 by 708 bw 109 bl 0.165 br 0.587 src 0 r 0 vu +0.00?
+ULOG 1007.218 c1 id7 u 0.831 w 125 by 656 bw 45 bl 0.653 br 1.010 src 0 r 2 vu +0.00?
+ULOG 1007.218 c2 id2 u 1.502 w 262 by 709 bw 276 bl 0.975 br 2.029 src 0 r 0 vu +0.33
+ULOG 1007.285 c1 id2 u 0.402 w 240 by 708 bw 109 bl 0.175 br 0.630 src 0 r 0 vu +0.02
+ULOG 1007.285 c1 id7 u 0.953 w 109 by 657 bw 46 bl 0.742 br 1.164 src 0 r 2 vu +0.00?
+ULOG 1007.285 c2 id2 u 1.617 w 242 by 708 bw 279 bl 1.041 br 2.193 src 0 r 0 vu +0.34
+ULOG 1007.351 c1 id2 u 0.405 w 241 by 709 bw 109 bl 0.179 br 0.631 src 0 r 0 vu +0.04
+ULOG 1007.351 c1 id7 u 0.948 w 108 by 658 bw 47 bl 0.734 br 1.163 src 0 r 2 vu +0.00?
+ULOG 1007.351 c2 id2 u 1.653 w 240 by 709 bw 280 bl 1.070 br 2.236 src 0 r 0 vu +0.40
+ULOG 1007.417 c1 id2 u 0.399 w 238 by 708 bw 109 bl 0.169 br 0.629 src 0 r 0 vu +0.03
+ULOG 1007.417 c1 id7 u 0.960 w 108 by 659 bw 48 bl 0.739 br 1.181 src 0 r 2 vu +0.00?
+ULOG 1007.417 c2 id2 u 1.668 w 240 by 709 bw 283 bl 1.077 br 2.259 src 0 r 0 vu +0.00?
+frame=  178 fps= 15 q=-0.0 size=N/A time=00:00:11.86 bitrate=N/A dup=0 drop=173 speed=0.991x    ULOG 1007.483 c1 id2 u 0.388 w 233 by 708 bw 110 bl 0.152 br 0.624 src 0 r 0 vu +0.00
+ULOG 1007.483 c1 id7 u 0.953 w 108 by 660 bw 50 bl 0.722 br 1.183 src 0 r 2 vu +0.00?
+ULOG 1007.483 c2 id2 u 1.635 w 246 by 713 bw 289 bl 1.048 br 2.221 src 0 r 0 vu +0.00?
+ULOG 1007.548 c1 id2 u 0.375 w 229 by 707 bw 110 bl 0.135 br 0.616 src 0 r 0 vu -0.03
+ULOG 1007.548 c1 id7 u 0.937 w 104 by 660 bw 50 bl 0.694 br 1.179 src 0 r 2 vu +0.00?
+ULOG 1007.548 c2 id2 u 1.676 w 238 by 711 bw 288 bl 1.070 br 2.281 src 0 r 0 vu +0.00?
+ULOG 1007.616 c1 id2 u 0.360 w 225 by 707 bw 111 bl 0.113 br 0.607 src 0 r 0 vu -0.06
+ULOG 1007.616 c1 id7 u 0.917 w 101 by 659 bw 50 bl 0.670 br 1.164 src 0 r 2 vu +0.00?
+ULOG 1007.616 c2 id2 u 1.659 w 241 by 713 bw 296 bl 1.045 br 2.273 src 0 r 0 vu +0.00?
+ULOG 1007.681 c1 id2 u 0.347 w 223 by 707 bw 110 bl 0.100 br 0.593 src 0 r 0 vu -0.15
+ULOG 1007.681 c1 id7 u 0.890 w 99 by 659 bw 48 bl 0.649 br 1.131 src 0 r 2 vu +0.00?
+ULOG 1007.681 c2 id2 u 1.593 w 251 by 718 bw 305 bl 0.985 br 2.201 src 0 r 0 vu -0.19
+ULOG 1007.756 c1 id2 u 0.297 w 244 by 707 bw 111 bl 0.069 br 0.525 src 0 r 0 vu -0.28
+ULOG 1007.756 c1 id7 u 0.698 w 122 by 661 bw 50 bl 0.492 br 0.905 src 0 r 2 vu +0.00?
+ULOG 1007.756 c2 id2 u 1.464 w 267 by 716 bw 302 bl 0.899 br 2.029 src 0 r 0 vu -0.50
+ULOG 1007.819 c1 id2 u 0.277 w 244 by 707 bw 111 bl 0.048 br 0.505 src 0 r 0 vu -0.34
+ULOG 1007.819 c1 id7 u 0.660 w 123 by 661 bw 49 bl 0.460 br 0.860 src 0 r 2 vu +0.00?
+ULOG 1007.819 c2 id2 u 1.412 w 286 by 723 bw 309 bl 0.872 br 1.952 src 0 r 0 vu -0.77
+ULOG 1007.884 c1 id2 u 0.295 w 217 by 708 bw 108 bl 0.046 br 0.544 src 0 r 0 vu -0.30
+ULOG 1007.884 c1 id7 u 0.809 w 99 by 662 bw 48 bl 0.567 br 1.051 src 0 r 2 vu +0.00?
+ULOG 1007.884 c2 id2 u 1.502 w 275 by 731 bw 318 bl 0.924 br 2.080 src 0 r 0 vu -0.74
+ULOG 1007.950 c1 id2 u 0.292 w 215 by 708 bw 109 bl 0.040 br 0.545 src 0 r 0 vu -0.22
+ULOG 1007.950 c1 id7 u 0.791 w 101 by 663 bw 49 bl 0.548 br 1.034 src 0 r 2 vu +0.00?
+ULOG 1007.950 c2 id2 u 1.493 w 279 by 733 bw 321 bl 0.916 br 2.069 src 0 r 0 vu -0.50
+frame=  186 fps= 15 q=-0.0 size=N/A time=00:00:12.40 bitrate=N/A dup=0 drop=181 speed=0.994x    ULOG 1008.016 c1 id2 u 0.300 w 217 by 709 bw 109 bl 0.049 br 0.551 src 0 r 0 vu -0.10
+ULOG 1008.016 c1 id7 u 0.797 w 102 by 664 bw 50 bl 0.553 br 1.042 src 0 r 2 vu +0.00?
+ULOG 1008.016 c2 id2 u 1.547 w 267 by 729 bw 319 bl 0.950 br 2.145 src 0 r 0 vu -0.03
+ULOG 1008.084 c1 id2 u 0.306 w 217 by 710 bw 107 bl 0.060 br 0.552 src 0 r 0 vu +0.05
+ULOG 1008.084 c1 id7 u 0.798 w 107 by 667 bw 49 bl 0.569 br 1.027 src 0 r 2 vu +0.00?
+ULOG 1008.084 c2 id2 u 1.552 w 269 by 731 bw 323 bl 0.952 br 2.152 src 0 r 0 vu +0.37
+ULOG 1008.149 c1 id2 u 0.309 w 223 by 713 bw 104 bl 0.077 br 0.542 src 0 r 0 vu +0.06
+ULOG 1008.149 c1 id7 u 0.765 w 118 by 672 bw 50 bl 0.554 br 0.976 src 0 r 2 vu +0.00?
+ULOG 1008.149 c2 id2 u 1.576 w 271 by 732 bw 322 bl 0.982 br 2.170 src 0 r 0 vu +0.36
+[nc_cutin] ch0 stats/16fr eval:48 hold:0 no_lane:16 far:16 lost:0 stale:0 inside:16 not_enter:16 cand:0 on:0 held:0 lead:0 virtual:0 movein:0 away:0 side:0 fps:15.1
+ULOG 1008.218 c1 id2 u 0.319 w 229 by 716 bw 103 bl 0.095 br 0.544 src 0 r 0 vu +0.09
+ULOG 1008.218 c1 id7 u 0.767 w 125 by 675 bw 45 bl 0.589 br 0.946 src 0 r 2 vu +0.00?
+ULOG 1008.218 c2 id2 u 1.561 w 280 by 736 bw 328 bl 0.976 br 2.145 src 0 r 0 vu +0.35
+ULOG 1008.287 c1 id2 u 0.329 w 235 by 720 bw 99 bl 0.119 br 0.539 src 0 r 0 vu +0.10
+ULOG 1008.287 c1 id7 u 0.768 w 130 by 678 bw 46 bl 0.592 br 0.943 src 0 r 2 vu +0.00?
+ULOG 1008.287 c2 id2 u 1.570 w 282 by 738 bw 332 bl 0.983 br 2.157 src 0 r 0 vu +0.19
+ULOG 1008.361 c1 id2 u 0.341 w 247 by 725 bw 101 bl 0.137 br 0.545 src 0 r 0 vu +0.12
+ULOG 1008.361 c1 id7 u 0.733 w 138 by 682 bw 49 bl 0.557 br 0.910 src 0 r 2 vu +0.00?
+ULOG 1008.361 c2 id2 u 1.554 w 289 by 742 bw 337 bl 0.971 br 2.138 src 0 r 0 vu +0.03
+ULOG 1008.424 c1 id2 u 0.321 w 281 by 730 bw 107 bl 0.130 br 0.512 src 0 r 0 vu +0.00?
+ULOG 1008.424 c1 id7 u 0.636 w 168 by 686 bw 47 bl 0.496 br 0.776 src 0 r 2 vu +0.00?
+ULOG 1008.424 c2 id2 u 1.409 w 322 by 746 bw 341 bl 0.880 br 1.939 src 0 r 0 vu -0.32
+[app] shutting down
+EXIT CNN_TASK!!
+EXIT PP_TASK!!
+[app] exit
+frame=  193 fps= 15 q=-0.0 size=N/A time=00:00:12.86 bitrate=N/A dup=0 drop=188 speed=0.991x    frame=  201 fps= 15 q=-0.0 size=N/A time=00:00:13.40 bitrate=N/A dup=0 drop=196 speed=0.994x    Stopping video feeder (pid 32555)
+frame=  204 fps= 15 q=-0.0 Lsize=N/A time=00:00:13.60 bitrate=N/A dup=0 drop=199 speed=0.989x    
+video:1239300kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+Exiting normally, received signal 15.

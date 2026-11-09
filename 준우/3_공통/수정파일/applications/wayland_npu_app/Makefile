@@ -254,6 +254,8 @@ CFLAGS_TEST         += -DUID_TSB_GUI=0
 
 ifeq ($(USE_BYTETRACK), yes)
 CFLAGS_TEST         += -DUSE_BYTETRACK
+# SDK ByteTrack: one tracker per class (numbers repeat across classes) -> cut-in keys tracks by class + number
+CFLAGS_TEST         += -DNC_CUTIN_ID_PER_CLASS=1
 CFLAGS_TEST         += -DUSE_REMOVED_TRACK_LIMITED
 # CFLAGS_TEST         += -DIGN_SPECIFIC_CLASS_TRACKING
 endif

@@ -26,6 +26,10 @@ static uint64_t g_lead_on_us   = (uint64_t)(NC_CUTIN_LEAD_ON_MS * 1000.0f);
 static float    g_est_edge     = NC_CUTIN_EST_EDGE;
 static float    g_est_move     = NC_CUTIN_EST_MOVE;
 static float    g_away_ratio   = NC_CUTIN_AWAY_RATIO;
+static float    g_min_vu       = NC_CUTIN_MIN_VU;
+static float    g_vu_win_ms    = NC_CUTIN_VU_WIN_MS;
+static float    g_side_w       = NC_CUTIN_SIDE_W_PX;
+static int      g_id_per_class = NC_CUTIN_ID_PER_CLASS;
 
 static void env_float(const char *name, float *v)
 {
@@ -65,6 +69,14 @@ static void cutin_load_config(void)
     env_float("CUTIN_EST_EDGE",   &g_est_edge);
     env_float("CUTIN_EST_MOVE",   &g_est_move);
     env_float("CUTIN_AWAY_RATIO", &g_away_ratio);
+    env_float("CUTIN_MIN_VU",     &g_min_vu);
+    env_float("CUTIN_VU_WIN_MS",  &g_vu_win_ms);
+    env_float("CUTIN_SIDE_W",     &g_side_w);
+    {
+        float v = (float)g_id_per_class;
+        env_float("CUTIN_ID_PER_CLASS", &v);
+        g_id_per_class = v >= 0.5f;
+    }
     {
         float v = (float)g_lane_src_max;
         env_float("CUTIN_LANE_SRC", &v);
@@ -87,12 +99,13 @@ static void cutin_load_config(void)
            (double)g_off_us * 0.001, (double)g_hold_us * 0.001, (double)g_min_lane_w,
            (double)g_lane_stale_us * 0.001, (double)NC_CUTIN_STALE_FRAMES);
     printf("[nc_cutin] config: lane source=%s (lead: on=%.0fms, virtual: margin=%.2f on=%.0fms, "
-           "moving-in edge=%.2f move=%.2f, pulling away < %.2f)\n",
+           "moving-in edge=%.2f move=%.2f, pulling away < %.2f, far car (lane < %.0f px) sideways >= %.2f lane/s over %.0f ms, track key=%s)\n",
            g_lane_src_max == NC_CUTIN_LANE_VIRTUAL ? "measured+held+lead+virtual"
            : g_lane_src_max == NC_CUTIN_LANE_LEAD ? "measured+held+lead"
            : g_lane_src_max == NC_CUTIN_LANE_HELD ? "measured+held" : "measured",
            (double)g_lead_on_us * 0.001, (double)g_virt_margin, (double)g_virt_on_us * 0.001,
-           (double)g_est_edge, (double)g_est_move, (double)g_away_ratio);
+           (double)g_est_edge, (double)g_est_move, (double)g_away_ratio, (double)g_side_w, (double)g_min_vu, (double)g_vu_win_ms,
+           g_id_per_class ? "class+id" : "id");
 }
 
 float nc_cutin_get_horizon_ms(void)
@@ -180,11 +193,17 @@ typedef struct {
     float    h_ref, vh;
     uint64_t h_ref_us;
     uint64_t away_until;  /* pulling away fast was seen: not a candidate until this time */
+    /* u_now history for the sideways speed (ring, newest at uh_i - 1) */
+    float    uh[NC_CUTIN_U_HIST];
+    uint64_t uh_t[NC_CUTIN_U_HIST];
+    int      uh_n, uh_i, uh_grp;
 } stCutinTrack;
 
-/* recent warnings (any class): a track that turns ON near one of them within
- * CUTIN_DUP_MS is the same vehicle seen again (ByteTrack keys tracks by class,
- * so a car re-detected as a truck gets a new track) -> no second trigger */
+/* recent warnings (any class) within CUTIN_DUP_MS: the same track turning ON
+ * again is the same vehicle -> no second trigger. A new track near a recent
+ * warning is the same vehicle too, but only if that warning's track is gone
+ * (re-detected with a new number). If it is still tracked, the two are
+ * different cars side by side (11/09, px: bus and silver car merged) */
 #define NC_CUTIN_RECENT  (8)
 typedef struct {
     int      used, class_id, track_id;
@@ -213,6 +232,7 @@ typedef struct {
     int st_held, st_lead, st_virt; /* judged on a HELD / LEAD / VIRTUAL lane */
     int st_movein;        /* candidates from the moving-in rule */
     int st_away;          /* rejected: pulling away fast */
+    int st_side;          /* rejected: not moving sideways toward our lane */
 #endif
 } stCutinCh;
 
@@ -224,7 +244,10 @@ static stCutinTrack *get_track(int ch, int class_id, int track_id)
     for (int i = 0; i < NC_CUTIN_MAX_TRACKS; i++) {
         stCutinTrack *t = &g_cutin[ch].t[i];
         if (t->used) {
-            if (t->class_id == class_id && t->track_id == track_id) return t;
+            if (t->track_id == track_id && (!g_id_per_class || t->class_id == class_id)) {
+                t->class_id = class_id;   /* class flip on the same track (one tracker) */
+                return t;
+            }
         } else if (free_slot == NULL) {
             free_slot = t;
         }
@@ -281,6 +304,51 @@ static float lane_w_at(int ch, float y)
     return xr - xl;
 }
 
+/* lane sources whose u can be compared over time: measured and held are the
+ * same lane; lead / virtual lanes are placed differently (u jumps on a switch) */
+static int lane_group(int src)
+{
+    return src <= NC_CUTIN_LANE_HELD ? 0 : src;
+}
+
+static void u_hist_add(stCutinTrack *t, float u, int src, uint64_t ts)
+{
+    int g = lane_group(src);
+    if (t->uh_n > 0) {
+        if (t->uh_grp != g) t->uh_n = 0;                       /* lane switched: start over */
+        else if (ts <= t->uh_t[(t->uh_i + NC_CUTIN_U_HIST - 1) % NC_CUTIN_U_HIST]) return; /* same frame */
+    }
+    t->uh_grp = g;
+    t->uh[t->uh_i] = u;
+    t->uh_t[t->uh_i] = ts;
+    t->uh_i = (t->uh_i + 1) % NC_CUTIN_U_HIST;
+    if (t->uh_n < NC_CUTIN_U_HIST) t->uh_n++;
+}
+
+/* sideways speed in lane widths/s (+ = to the right): least-squares slope of
+ * u over the last VU_WIN_MS. 1 = known */
+static int u_speed(const stCutinTrack *t, uint64_t now, float *vu)
+{
+    double st = 0.0, su = 0.0, stt = 0.0, stu = 0.0, span = 0.0;
+    int n = 0;
+    for (int k = 0; k < t->uh_n; k++) {
+        int i = (t->uh_i + NC_CUTIN_U_HIST - 1 - k) % NC_CUTIN_U_HIST;
+        if (t->uh_t[i] > now) continue;
+        double age = (double)(now - t->uh_t[i]) * 1e-6;
+        if (age * 1000.0 > g_vu_win_ms) break;
+        double x = -age;
+        st += x; su += t->uh[i]; stt += x * x; stu += x * t->uh[i];
+        if (age > span) span = age;
+        n++;
+    }
+    double min_span = NC_CUTIN_VU_MIN_SPAN_MS < 0.5 * g_vu_win_ms ? NC_CUTIN_VU_MIN_SPAN_MS : 0.5 * (double)g_vu_win_ms;
+    if (n < 3 || span * 1000.0 < min_span) return 0;
+    double den = n * stt - st * st;
+    if (den <= 1e-9) return 0;
+    *vu = (float)((n * stu - st * su) / den);
+    return 1;
+}
+
 /* ---------------- API ---------------- */
 
 void nc_cutin_reset(void)
@@ -316,7 +384,10 @@ static void check_ego_lane_change(int ch, uint64_t disp_ts_us)
         if (d < 0.0f) d = -d;
         if (d > NC_CUTIN_LC_JUMP_RATIO * c->ref_w) {
             c->hold_until = disp_ts_us + g_hold_us;
-            for (int i = 0; i < NC_CUTIN_MAX_TRACKS; i++) c->t[i].hit_cnt = 0;
+            for (int i = 0; i < NC_CUTIN_MAX_TRACKS; i++) {
+                c->t[i].hit_cnt = 0;
+                c->t[i].uh_n = 0;   /* u of every car jumps by one lane */
+            }
             printf("[nc_cutin] ch%d ego lane change (center %.0f -> %.0f px), hold %.0f ms\n",
                    ch, (double)c->ref_cx, (double)cx, (double)g_hold_us * 0.001);
         }
@@ -402,6 +473,12 @@ int nc_cutin_eval(int ch, int class_id, int track_id, const stBBox *now_box,
         int r = lane_u(ch, nx, ny, disp_ts_us, &u_now, &src);
         float margin = src == NC_CUTIN_LANE_VIRTUAL ? g_virt_margin : g_margin;
         t->lane_src = src;
+        float vu = 0.0f;
+        int vu_ok = 0;
+        if (r == LANE_OK) {
+            u_hist_add(t, u_now, src, disp_ts_us);
+            vu_ok = u_speed(t, disp_ts_us, &vu);
+        }
         /* inner bottom corner: the side of the car that faces our lane.
          * A car beside us shows its side more as we get closer, which pulls
          * the box center toward our lane; the near corner stays on the side
@@ -465,7 +542,19 @@ int nc_cutin_eval(int ch, int class_id, int track_id, const stBBox *now_box,
             }
             /* kept for a while: the position prediction lags the box size */
             int away = disp_ts_us < t->away_until;
-            cand = (outside_now || movein) && inside_fut && edge_ok && !away;
+            /* far car: moving sideways toward our lane (see nc_cutin.h). Side
+             * from the center u: the corner rule may have replaced u_now */
+            float inward = (t->uh_n > 0 && t->uh[(t->uh_i + NC_CUTIN_U_HIST - 1) % NC_CUTIN_U_HIST] >= 0.5f) ? -vu : vu;
+            float w_row = lane_w_at(ch, ny);
+            int side_ok = g_min_vu <= 0.0f || w_row >= g_side_w || !vu_ok || inward >= g_min_vu;
+            cand = (outside_now || movein) && inside_fut && edge_ok && !away && side_ok;
+#ifdef NC_CUTIN_STATS
+            if ((outside_now || movein) && inside_fut && edge_ok && !away && !side_ok) {
+                sc->st_side++;
+                printf("[nc_cutin] ch%d not sideways class:%d id:%d u_now:%.2f u_fut:%.2f vu:%+.2f/s lane %.0f px\n",
+                       ch, class_id, track_id, (double)u_now, (double)u_fut, (double)vu, (double)w_row);
+            }
+#endif
 #ifdef NC_CUTIN_STATS
             if ((outside_now || movein) && inside_fut && edge_ok && away) sc->st_away++;
 #endif
@@ -475,9 +564,10 @@ int nc_cutin_eval(int ch, int class_id, int track_id, const stBBox *now_box,
                 float dxl = 0.0f, dxr = 0.0f;
                 uint64_t dts = 0;
                 ego_lane(ch, ny, &dxl, &dxr, &dts, NULL);
-                printf("[nc_cutin] ch%d cand class:%d id:%d u_now:%.2f u_fut:%.2f edge:%.2f>%.2f box:%.0f,%.0f,%.0f,%.0f "
+                printf("[nc_cutin] ch%d cand class:%d id:%d u_now:%.2f u_fut:%.2f vu:%+.2f/s%s edge:%.2f>%.2f box:%.0f,%.0f,%.0f,%.0f "
                        "fut:%.0f,%.0f lane@%.0f:%.0f-%.0f\n", ch, class_id, track_id,
-                       (double)u_now, (double)u_fut, (double)e_now, (double)e_fut, (double)now_box->x, (double)now_box->y,
+                       (double)u_now, (double)u_fut, (double)vu, vu_ok ? "" : "(?)",
+                       (double)e_now, (double)e_fut, (double)now_box->x, (double)now_box->y,
                        (double)now_box->w, (double)now_box->h, (double)fx, (double)fy,
                        (double)ny, (double)dxl, (double)dxr);
             }
@@ -506,6 +596,21 @@ static int near_box(float ax, float ay, float aw, float bx, float by, float bw)
     return dx * dx + dy * dy < d * d;
 }
 
+static int same_track(int ca, int ia, int cb, int ib)
+{
+    return ia == ib && (!g_id_per_class || ca == cb);
+}
+
+/* the track of a recent warning is still evaluated in this frame */
+static int track_alive(const stCutinCh *c, const stCutinRecent *r)
+{
+    for (int i = 0; i < NC_CUTIN_MAX_TRACKS; i++) {
+        const stCutinTrack *t = &c->t[i];
+        if (t->used && t->seen && same_track(t->class_id, t->track_id, r->class_id, r->track_id)) return 1;
+    }
+    return 0;
+}
+
 static stCutinRecent *find_recent(stCutinCh *c, const stCutinTrack *t, uint64_t now)
 {
     for (int i = 0; i < NC_CUTIN_RECENT; i++) {
@@ -513,8 +618,8 @@ static stCutinRecent *find_recent(stCutinCh *c, const stCutinTrack *t, uint64_t 
         if (!r->used || now - r->t > g_dup_us) continue;
         /* the same track turning ON again soon is the same vehicle too
          * (board 11/06: virtual lane, same car ON twice 1.5 s apart) */
-        if (r->class_id == t->class_id && r->track_id == t->track_id) return r;
-        if (near_box(t->bx, t->by, t->bw, r->bx, r->by, r->bw)) return r;
+        if (same_track(r->class_id, r->track_id, t->class_id, t->track_id)) return r;
+        if (!track_alive(c, r) && near_box(t->bx, t->by, t->bw, r->bx, r->by, r->bw)) return r;
     }
     return NULL;
 }
@@ -524,7 +629,10 @@ static void remember_recent(stCutinCh *c, const stCutinTrack *t, uint64_t now)
     stCutinRecent *slot = NULL, *oldest = &c->recent[0];
     for (int i = 0; i < NC_CUTIN_RECENT; i++) {
         stCutinRecent *r = &c->recent[i];
-        if (r->used && r->class_id == t->class_id && r->track_id == t->track_id) { slot = r; break; }
+        if (r->used && same_track(r->class_id, r->track_id, t->class_id, t->track_id)) {
+            slot = r;
+            break;
+        }
         if (!r->used || r->t < oldest->t) oldest = r;
     }
     if (slot == NULL) slot = oldest;
@@ -596,16 +704,16 @@ int nc_cutin_end_frame(int ch)
         /* eval: predicted vehicles judged. no_lane = far + lost + stale (see nc_cutin.h),
          * inside: already in ego lane, not_enter: outside and stays outside, cand: cut-in candidate */
         printf("[nc_cutin] ch%d stats/%dfr eval:%d hold:%d no_lane:%d far:%d lost:%d stale:%d "
-               "inside:%d not_enter:%d cand:%d on:%d held:%d lead:%d virtual:%d movein:%d away:%d fps:%.1f\n",
+               "inside:%d not_enter:%d cand:%d on:%d held:%d lead:%d virtual:%d movein:%d away:%d side:%d fps:%.1f\n",
                ch, c->st_frames, c->st_eval, c->st_hold, c->st_far + c->st_lost + c->st_stale,
                c->st_far, c->st_lost, c->st_stale, c->st_inside_now, c->st_not_enter, c->st_cand,
-               nc_cutin_active_count(ch), c->st_held, c->st_lead, c->st_virt, c->st_movein, c->st_away,
+               nc_cutin_active_count(ch), c->st_held, c->st_lead, c->st_virt, c->st_movein, c->st_away, c->st_side,
                c->frame_dt_us > 0.0f ? 1.0e6 / (double)c->frame_dt_us : 0.0);
         c->st_start = now;
         c->st_frames = c->st_eval = c->st_hold = 0;
         c->st_far = c->st_lost = c->st_stale = 0;
         c->st_inside_now = c->st_not_enter = c->st_cand = 0;
-        c->st_held = c->st_lead = c->st_virt = c->st_movein = c->st_away = 0;
+        c->st_held = c->st_lead = c->st_virt = c->st_movein = c->st_away = c->st_side = 0;
     }
 #endif
     return c->rose;
