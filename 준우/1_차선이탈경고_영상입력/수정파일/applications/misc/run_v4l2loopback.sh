@@ -154,11 +154,17 @@ export LD_LIBRARY_PATH="$APP_DIR/misc/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 set -- -stream_loop -1 -re -i "$INPUT_FILE_PATH"
 n=0
 while [ "$n" -lt "$FEED_DEVICES" ]; do
+    # FEED_VF (optional): ffmpeg filter for test videos whose framing differs
+    # from our camera, e.g. horizon too low:
+    #   FEED_VF="crop=1067:600:426:480" ./run_app_wayland_npu.sh video.mp4
+    if [ -n "$FEED_VF" ]; then
+        set -- "$@" -vf "$FEED_VF"
+    fi
     set -- "$@" -s 1920x1080 -pix_fmt rgb24 -r "$FEED_FPS" -f v4l2 "/dev/video$((VIDEO_NR + n))"
     n=$((n + 1))
 done
 
-echo "Feeding $INPUT_FILE_PATH -> /dev/video$VIDEO_NR (x$FEED_DEVICES) at ${FEED_FPS} fps" >&2
+echo "Feeding $INPUT_FILE_PATH -> /dev/video$VIDEO_NR (x$FEED_DEVICES) at ${FEED_FPS} fps${FEED_VF:+ (filter: $FEED_VF)}" >&2
 
 # exec keeps this PID, so the pid file holds the ffmpeg PID
 echo "$$" > "$FEEDER_PIDFILE" 2>/dev/null || true

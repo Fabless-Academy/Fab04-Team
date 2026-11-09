@@ -67,7 +67,33 @@ typedef struct {
     int   trigger_frames;       // consecutive frames needed to raise a warning
     float hold_s;               // keep the warning at least this long
     float lost_timeout_s;       // lanes missing longer than this -> INVALID
+
+    /* Ego lane for other modules (cut-in) when the lines are not seen.
+     * LDW itself never warns on these. */
+    float ego_fresh_s;          // lane result newer than this = measured
+    float ego_hold_s;           // then keep the last lane (moved by our lateral speed) up to this age
+    int   ego_virtual;          // 1: after that, a virtual lane from the learned road shape
+    int   ego_lead;             // 1: before the virtual lane, a lane built from the car ahead
+    float lead_min_s;           // the car ahead must stay that long before it is used
+
+    /* Usual place in the lane (camera not on the car centre line, e.g. a phone
+     * on the driver side). Learned slowly from steady driving and removed
+     * from the offset, up to auto_center_max_m. */
+    int   auto_center;          // 1: learn it
+    float auto_center_max_m;    // largest correction
+    float auto_center_tau_s;    // learning time constant
+    float auto_center_min_s;    // steady driving needed before it is used
 } stNcLdwConfig;
+
+/* Where the ego lane given to other modules comes from */
+typedef enum {
+    NC_LDW_EGO_SRC_NONE = 0,    // no ego lane
+    NC_LDW_EGO_SRC_DETECTED,    // both lines detected
+    NC_LDW_EGO_SRC_ONE_SIDE,    // one line detected, the other from the learned lane width
+    NC_LDW_EGO_SRC_HELD,        // lines lost for a moment: last lane, moved by our lateral motion
+    NC_LDW_EGO_SRC_LEAD,        // lines lost longer, car ahead seen: lane around the car ahead
+    NC_LDW_EGO_SRC_VIRTUAL      // lines lost longer: 3.5 m lane at our usual place in the lane
+} eNcLdwEgoSrc;
 
 typedef struct {
     eNcLdwState state;
@@ -83,7 +109,9 @@ typedef struct {
     float vehicle_x_px;         // vehicle centre column at ref_y_px
     float m_per_px;             // metres per pixel at ref_y_px
 
-    float offset_m;             // vehicle centre - lane centre (+: right of centre)
+    float offset_m;             // vehicle centre - lane centre (+: right of centre), after the
+                                // usual-place correction (raw = offset_m + center_corr_m)
+    float center_corr_m;        // usual-place correction in use
     float dist_left_m;          // vehicle left side to left line (<0: crossed)
     float dist_right_m;         // vehicle right side to right line (<0: crossed)
     float lat_vel_mps;          // lateral velocity (+: moving right)
@@ -108,6 +136,8 @@ typedef struct {
     int   calib_valid;
     float calib_k;
     float calib_vp_y;
+    float calib_vp_x;           // vanishing column (camera yaw)
+    float calib_cx_ref;         // usual lane centre on ref_y_px (slow average)
 
     // temporal state
     int      has_last;
@@ -121,6 +151,12 @@ typedef struct {
     int      turn_left;
     int      turn_right;
     float    dashed_score[2];   // left/right: share of recent frames seen as dashed (-1 = none yet)
+
+    // usual place in the lane (auto_center)
+    float    center_off_m;      // learned raw offset (m, +: right)
+    float    center_learn_s;    // steady driving time learned so far
+    float    center_used_m;     // correction in use (0 until center_learn_s >= auto_center_min_s)
+    float    center_logged_m;
 } stNcLdwContext;
 
 void nc_ldw_default_config(stNcLdwConfig *cfg, float img_w, float img_h);
@@ -182,15 +218,34 @@ void nc_ldw_app_draw(uint32_t ch, struct viewport vp, const stNcLdwDrawRes *res)
  * Ego-lane area for other modules (cut-in prediction). Thread-safe.
  * Coordinates are canvas px (same as lane/bbox results), y grows downward.
  *
- * nc_ldw_get_ego_lane(): left/right boundary x on row y.
+ * nc_ldw_get_ego_lane(): left/right boundary x on row y, measured lanes only
+ *   (DETECTED / ONE_SIDE).
  *   time_us (optional): data time of the lane result, to pick the closest one.
  *   Returns 0 on success, -1 if no ego lane (no lanes, SKIP mode, y above horizon).
  *
+ * nc_ldw_get_ego_lane_src(): same, but also gives HELD / VIRTUAL lanes when
+ *   the lines are not seen. src (optional) tells which one. For HELD / VIRTUAL
+ *   time_us is the time the estimate was made.
+ *
  * nc_ldw_is_in_ego_lane(): 1 = (x, y) inside the ego lane, 0 = outside,
- *   -1 = unknown (no ego lane).
+ *   -1 = unknown (no ego lane). Measured lanes only.
  */
 int nc_ldw_get_ego_lane(uint32_t ch, float y, float *x_left, float *x_right, uint64_t *time_us);
+int nc_ldw_get_ego_lane_src(uint32_t ch, float y, float *x_left, float *x_right,
+                            uint64_t *time_us, eNcLdwEgoSrc *src);
 int nc_ldw_is_in_ego_lane(uint32_t ch, float x, float y);
+const char *nc_ldw_ego_src_name(eNcLdwEgoSrc src);
+
+/*
+ * Vehicles of the current frame, for the LEAD lane (render thread, before
+ * nc_ldw_app_process() of the same channel). nc_cutin_eval() calls it.
+ *   x, y    : bottom-center of the box (canvas px)
+ *   w       : box width (px)
+ *   width_m : assumed real width when it was not learned (car 1.8, bus/truck 2.5)
+ *   cutting_in: 1 = cut-in warning or candidate for this car -> never the car ahead
+ */
+void nc_ldw_feed_vehicle(uint32_t ch, int class_id, int track_id, float x, float y, float w,
+                         float width_m, int cutting_in);
 #endif
 
 #endif
