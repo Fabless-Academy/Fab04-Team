@@ -1,0 +1,149 @@
+#ifndef __NC_MINIMAP_H__
+#define __NC_MINIMAP_H__
+
+/*
+ * Minimap (bird's-eye view)
+ *
+ * Draws the ego vehicle, the detected lane lines (network points, solid/dashed
+ * from the network lane class) and detected vehicles seen from above, in a
+ * panel on the left side of each view. Road positions come from the LDW module
+ * (flat road, lane-width scale, calibrated horizon), so it needs USE_LDW.
+ * Render thread only.
+ *
+ * Vehicle positions: bottom-centre of the box drawn on the camera view,
+ * smoothed per vehicle (EMA). One minimap track per vehicle even if the class
+ * (car/truck) or tracker id changes; class shown = vote over recent frames.
+ * A vehicle passing through the side of the image goes on with its last closing
+ * speed down the ego side, dashed and fading: that part is not measured.
+ *
+ * Per displayed frame:
+ *   nc_minimap_begin_frame(ch, t_disp);      // before adding detections
+ *   nc_minimap_add_obj(ch, &obj);            // for each vehicle bbox
+ *   nc_minimap_set_frame(ch, rgb, w, h);     // camera frame (yellow centre line)
+ *   nc_minimap_draw(ch, viewport, &res);     // after the camera overlays
+ *
+ * Lanes: one centre curve from the two ego lines, lines at fixed offsets from it,
+ * so the lane width is constant. Gentle curves are drawn straight (see nc_minimap.c).
+ *
+ * Forward distance depends on NC_LDW_DEFAULT_FOCAL_PX / LDW_FOCAL_PX (see nc_ldw.h).
+ */
+
+#include <stdint.h>
+#include "nc_opengl_interface.h"
+#include "nc_opengl_ttf_font.h"
+#include "nc_cnn_common.h"
+
+/* Forward display range (m). Temporarily 25 m (was 40 m) while the far-range
+ * jitter is analysed; set back to 40.0f to restore. Display only: positions,
+ * smoothing and the NC_BEV_LOG rows are computed for every vehicle. */
+#define NC_MINIMAP_DISPLAY_RANGE_M (25.0f)
+#define NC_MINIMAP_RANGE_M      NC_MINIMAP_DISPLAY_RANGE_M
+#define NC_MINIMAP_RANGE_HYST_M (2.0f)    // appear at <= RANGE-HYST, disappear above RANGE (never drawn beyond RANGE)
+#define NC_MINIMAP_LAT_RANGE_M  (9.0f)    // lateral range each side (m): ego lane + 2 lanes
+#define NC_MINIMAP_BG_ALPHA     (0.92f)   // panel background opacity
+
+/* Camera pitch compensation (road bumps). All box bottoms jump up/down together
+ * when the car pitches while the lane horizon does not follow, so every vehicle
+ * moves closer/farther at once. Per displayed frame the median bottom move of
+ * the vehicles (>= MIN_VEH, outliers > OUTLIER_PX dropped) is accumulated into a
+ * pitch offset that decays with TAU_S and is clamped to MAX_PX; the minimap uses
+ * bottom - offset. Board log 11-05: 0.3 s common distance change p90 19% -> 10%.
+ * MAX_PX 15 -> 40 (11-09): on the 0003 bridge the bottoms move up to 27 px in
+ * 0.2 s, so 15 px left the rest and all cars jumped about 1 m together.
+ * A frame's median is used only when at least half of the vehicles (and 2) are
+ * within max(AGREE_PX, AGREE_FRAC * |median|) of it; otherwise one fast car could
+ * drive the offset (0002: two vehicles, one closing in, offset ran to 36 px).
+ * 0: off (positions as before). */
+#define NC_MINIMAP_PITCH_COMP        (1)
+#define NC_MINIMAP_PITCH_TAU_S       (0.6f)
+#define NC_MINIMAP_PITCH_MAX_PX      (40.0f)
+#define NC_MINIMAP_PITCH_OUTLIER_PX  (25.0f)
+#define NC_MINIMAP_PITCH_MIN_VEH     (2)
+#define NC_MINIMAP_PITCH_AGREE_PX    (3.0f)
+#define NC_MINIMAP_PITCH_AGREE_FRAC  (0.5f)
+
+/* 1: passing vehicles go on beside the ego vehicle after leaving the image (see MM_COAST_*)
+ * 0: they stop at the image side and disappear after the hold */
+#define NC_MINIMAP_COAST (1)
+
+/* 1: lane line style from the UFLD lane_class output (1 = solid, 2 = dashed per
+ *    the ini comment; mapping not verified on the board yet)
+ * 0: draw every lane line dashed */
+#define NC_MINIMAP_USE_LANE_CLASS (1)
+
+/* 1: the centre line is drawn as a yellow double line. lane_class cannot tell yellow
+ *    (0002 centre line: mostly class 1 like white solid lines), so the colour of the
+ *    camera frame is sampled along the lines left of the ego vehicle (see MM_YEL_*).
+ *    Lines on the right are not checked: 0002 has a yellow-painted curb there.
+ *    Needs nc_minimap_set_frame(). 0: lane lines as before */
+#define NC_MINIMAP_YELLOW_CENTRE (1)
+
+/* Predicted trajectory: arrow from the front edge of a vehicle, FWD_M long. Only the
+ * nearest vehicle of each lane has one. The ego speed is not known here, so the arrow
+ * shows only the lateral motion and its length does not show speed.
+ * NC_MINIMAP_PRED_LANE_REL 1: the arrow follows the drawn lane and leans by the lateral
+ * speed relative to the lane over the last second, only when that speed is clear (dead
+ * band, see MM_PRED_* in nc_minimap.c); near buses and trucks get a straight arrow.
+ * 0: leans by the lateral part of the nc_traj prediction after NC_TRAJ_FUTURE_MS_DEFAULT
+ * (0.5 s), in ego coordinates (swings left and right on straight driving: box-centre
+ * velocity in pixels, the future bottom from the current box height, perspective).
+ * PRED_CUTIN_COLOR for a cut-in vehicle (its box is orange), PRED_COLOR otherwise.
+ * Predictions longer than MAX_M (bad velocity) are not drawn.
+ * Oncoming vehicles (left of the ego lane and closing fast, see MM_ONC_*) keep their
+ * box but get no arrow: a forward arrow is the opposite of their motion.
+ * Sizes in canvas px. 0: off. */
+#define NC_MINIMAP_SHOW_PRED         (1)
+#define NC_MINIMAP_PRED_LANE_REL     (1)
+#define NC_MINIMAP_PRED_FWD_M        (3.0f)
+#define NC_MINIMAP_PRED_MAX_M        (15.0f)
+#define NC_MINIMAP_PRED_BODY_W       (5.0f)
+#define NC_MINIMAP_PRED_HEAD_LEN     (15.0f)
+#define NC_MINIMAP_PRED_OUTLINE_PX   (1.5f)
+#define NC_MINIMAP_PRED_COLOR        {0.45f, 0.95f, 0.85f, 1.0f}
+#define NC_MINIMAP_PRED_CUTIN_COLOR  {1.0f, 0.40f, 0.05f, 1.0f}
+
+/* panel position / size in canvas px (1920 x 1080, y grows downward) */
+#define NC_MINIMAP_PANEL_X      (20.0f)
+// [merge 11.06] 기본값. HUD 3줄(상세 끔)이면 165, 상세 켜면 235 -> 앱에서 nc_minimap_set_panel_y()로 바꿈
+#define NC_MINIMAP_PANEL_Y      (165.0f)
+#define NC_MINIMAP_PANEL_W      (300.0f)
+#define NC_MINIMAP_PANEL_H      (460.0f)
+
+typedef struct {
+    Font *font;                         // small font for distance labels
+    struct gl_font_program *font_prog;
+    struct gl_npu_program *npu_prog;
+} stNcMinimapDrawRes;
+
+/* One detected vehicle. Boxes in canvas px, top-left x,y,w,h. */
+typedef struct {
+    const char *class_name;     // network class name ("car", "tru", "bus", "mot", ...)
+    int         track_id;       // tracker id (< 0: associated by position only)
+    stBBox      meas;           // tracker output at t_det_us (diagnostics)
+    stBBox      shown;          // box drawn on the camera view (used for the minimap)
+    int         pred_valid;     // 1: shown is the nc_traj prediction
+    uint64_t    t_det_us;       // capture time of the detection frame
+    uint64_t    t_disp_us;      // capture time of the displayed video frame
+    float       color[4];       // RGBA of the box on the camera view (class colour)
+    int         highlight;      // 1 = cut-in (drawn yellow)
+    int         fut_valid;      // 1: fut_u/fut_v hold the predicted bottom-centre
+    float       fut_u, fut_v;   // bottom-centre after NC_TRAJ_FUTURE_MS_DEFAULT (canvas px)
+} stNcMinimapObj;
+
+/* Start a new detection list for channel ch (keeps the old list if not called). */
+void nc_minimap_begin_frame(uint32_t ch, uint64_t t_disp_us);
+
+void nc_minimap_add_obj(uint32_t ch, const stNcMinimapObj *in);
+
+/* Camera frame of channel ch: interleaved RGB24, w x h, covering the whole canvas
+ * (scaled). The pixels are read during the call only (yellow centre line), so call it
+ * while the frame buffer is valid, once per displayed frame. */
+void nc_minimap_set_frame(uint32_t ch, const uint8_t *rgb, int w, int h);
+
+/* Update the vehicle tracks and draw the minimap of channel ch into its viewport. */
+void nc_minimap_draw(uint32_t ch, struct viewport vp, const stNcMinimapDrawRes *res);
+
+// [merge 11.06] 패널 위쪽 y(화면 위에서 아래로 px) 변경: HUD 줄 수에 맞춰 앱에서 호출
+void nc_minimap_set_panel_y(float y);
+
+#endif

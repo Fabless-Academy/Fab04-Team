@@ -1,0 +1,5 @@
+*.h264
+*.mp4
+rec_*.png
+bev/
+bev2/
